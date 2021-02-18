@@ -12,6 +12,6 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig)
 
-const firestoreProject = firebase.firestore()
+const firestore = firebase.firestore()
 
-export { firestoreProject }
+export { firestore }
