@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-      <Sidebar @signout = "redirect" uname="salman"/>
+      <Sidebar @signout = "redirect" />
       <Main/>
   </div>
 </template>

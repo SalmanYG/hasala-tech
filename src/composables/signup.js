@@ -10,6 +10,7 @@ try {
         throw new Error('Could not complete signup')
     }
     await res.user.updateProfile({displayName})
+
     error.value = null
     return res
    

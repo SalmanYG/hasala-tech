@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-      <h2>{{ username }}</h2>
+      <h2>{{ displayName }}</h2>
       <router-link  class="signout" :to="{ name: 'Home' }">Sign out</router-link>
    
       <a @click.prevent = "handleSignOut" href="" >Sign out</a>
@@ -10,11 +10,16 @@
 <script>
 import { ref } from 'vue'
 import useSignOut from "../composables/signout"
+import getUser from "../composables/getUser"
 export default {
-    props: ['uname'],
+  
     setup(props, context) {
-        const username = ref('')
-        username.value = props.uname
+        const {user} = getUser()
+        console.log(user);
+        
+        const displayName = user.value.displayName
+  console.log(displayName);
+  
 const {error, signOut} = useSignOut()
 
 const handleSignOut = async () =>{
@@ -25,7 +30,7 @@ const handleSignOut = async () =>{
 }
 }
 
-        return { error,username,handleSignOut }
+        return { displayName,error,handleSignOut }
     }
 }
 </script>
