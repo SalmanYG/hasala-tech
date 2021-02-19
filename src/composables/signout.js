@@ -1,32 +1,23 @@
-import {ref} from 'vue'
-import { auth } from '../firebase/config'
+import { ref } from "vue";
+import { auth } from "../firebase/config";
 
- 
-const error = ref(null)
+const error = ref(null);
 
+const signOut = async () => {
+  error.value = null;
+  try {
+    await auth.signOut();
 
-const signOut = async () =>{
-error.value = null
-try {
-    await auth.signOut()
-
-   
-    
-    error.value = null
-    
-   
-} catch (err) {
+    error.value = null;
+  } catch (err) {
     console.log(error.value);
-    
-    error.value = err.message
-}
 
-}
+    error.value = err.message;
+  }
+};
 
-const useSignout = () =>{
+const useSignout = () => {
+  return { error, signOut };
+};
 
-return {error, signOut}
-
-}
-
-export default useSignout
+export default useSignout;

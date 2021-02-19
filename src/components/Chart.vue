@@ -1,15 +1,10 @@
 <template>
-  <div class="chart">
-      
-  </div>
+  <div class="chart"></div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-
 </style>

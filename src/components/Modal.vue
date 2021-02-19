@@ -1,22 +1,17 @@
-<template>
-
- 
-
-</template>
+<template></template>
 
 
 <script>
-  export default {
-    name: 'modal',
+export default {
+  name: "modal",
 
-    methods: {
-      close() {
-        this.$emit('close');
-      },
+  methods: {
+    close() {
+      this.$emit("close");
     },
-  };
+  },
+};
 </script>
 
 <style>
-  
 </style>
