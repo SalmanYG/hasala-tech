@@ -5,18 +5,18 @@
         <Card title="Balance" content="500" func="z" />
       </div>
       <div class="col">
-        <Card title="salman" content="H3" func="h3" />
+        <Card title="salman" content="1200" func="h3" />
       </div>
       <div class="col">
-        <Card title="salman" content="H3" func="h3" />
+        <Card title="salman" content="1000" func="h3" />
       </div>
     </div>
     <div class="charts row">
       <div class="col">
-        <Chart />
+        <Chart type="line"/>
       </div>
       <div class="col">
-        <Chart />
+        <Chart type="line"/>
       </div>
     </div>
     <div class="wallets row">

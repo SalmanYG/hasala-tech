@@ -1,14 +1,14 @@
 <template>
-  <div class="dashboard container">
+<div class="dashboard container">
     <div class="row">
-      <div class="sidebar col-2">
-        <Sidebar @signout="redirect" uname="salman" />
-      </div>
-      <div class="main col-10">
-        <Main />
-      </div>
+        <div class="sidebar col-2">
+            <Sidebar @signout="redirect"/>
+        </div>
+        <div class="main col-10">
+            <Main />
+        </div>
     </div>
-  </div>
+</div>
 </template>
 
 <script>

@@ -23,7 +23,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .card {
   border-left: 4px solid lightblue;
   margin: 20px;

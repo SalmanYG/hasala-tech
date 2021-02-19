@@ -31,7 +31,7 @@ export default {
     const registered = ref(true);
 
     const redirectToDashboard = () => {
-      router.push("/dashboard");
+      router.push({ name: "Dashboard"});
     };
 
     const redirectToLogin = () => {
