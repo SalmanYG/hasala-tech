@@ -8,13 +8,16 @@ const error = ref(null)
 const signOut = async () =>{
 error.value = null
 try {
-    const res = await auth.signOut()
+    await auth.signOut()
 
+   
     
     error.value = null
-    return res
+    
    
 } catch (err) {
+    console.log(error.value);
+    
     error.value = err.message
 }
 

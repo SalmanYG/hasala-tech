@@ -1,20 +1,31 @@
 <template>
   <div class="sidebar">
       <h2>{{ username }}</h2>
-      <router-link class="signout" :to="{ name: 'Home' }">Sign out</router-link>
+      <router-link  class="signout" :to="{ name: 'Home' }">Sign out</router-link>
+   
+      <a @click.prevent = "handleSignOut" href="" >Sign out</a>
   </div>
 </template>
 
 <script>
 import { ref } from 'vue'
-
+import useSignOut from "../composables/signout"
 export default {
     props: ['uname'],
-    setup(props) {
+    setup(props, context) {
         const username = ref('')
         username.value = props.uname
+const {error, signOut} = useSignOut()
 
-        return { username }
+const handleSignOut = async () =>{
+    await signOut()
+
+    if(!error.value){
+  context.emit("signout")
+}
+}
+
+        return { error,username,handleSignOut }
     }
 }
 </script>
