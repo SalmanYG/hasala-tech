@@ -1,7 +1,6 @@
 <template>
   <div class="dashboard">
       <Sidebar uname="salman"/>
-      <Main/>
   </div>
 </template>
 
@@ -21,8 +20,8 @@ export default {
 </script>
 
 <style>
-.dashboard {
+/* .dashboard {
     display: grid;
     grid-template-columns: 1fr 3fr;
-}
+} */
 </style>
