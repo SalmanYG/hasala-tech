@@ -13,21 +13,34 @@
 </template>
 
 <script>
+import { ref } from "vue";
+
 import Main from '../components/Main'
 import Sidebar from '../components/Sidebar'
+import Modal from "../components/Modal"
 import {useRouter} from "vue-router"
 export default {
     components: {
         Main,
-        Sidebar
+        Sidebar,
+        Modal
     },
     setup() {
+        const showModal = ref(false)
+       
+        
         const router = useRouter()
 const redirect = () =>{
  router.push("/")   
 }
 
-return {redirect}
+const toggleModal = () =>{
+ showModal.value = !showModal.value  
+  console.log(showModal.value);
+}
+
+ console.log(showModal.value);
+return {toggleModal,showModal,redirect}
     }
 }
 </script>
