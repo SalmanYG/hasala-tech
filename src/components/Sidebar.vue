@@ -1,8 +1,6 @@
 <template>
   <div class="sidebar">
       <h2>{{ username }}</h2>
-      <router-link  class="signout" :to="{ name: 'Home' }">Sign out</router-link>
-   
       <a @click.prevent = "handleSignOut" href="" >Sign out</a>
   </div>
 </template>
@@ -33,14 +31,10 @@ const handleSignOut = async () =>{
 <style>
 .sidebar {
     height: 100%;
-    width: 180px;
-    position: fixed;
     padding: 20px 0;
     background-color: lightblue;
-    display: flex;
-    flex-direction: column;
 }
 .signout {
-    
+
 }
 </style>

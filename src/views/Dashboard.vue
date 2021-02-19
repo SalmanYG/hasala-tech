@@ -1,7 +1,14 @@
 <template>
-  <div class="dashboard">
-      <Sidebar @signout = "redirect" uname="salman"/>
-      <Main/>
+  <div class="dashboard container">
+      <div class="row">
+            <div class="sidebar col-2">
+                <Sidebar @signout = "redirect" uname="salman"/>
+            </div>
+            <div class="main col-10">
+                <Main/>
+            </div>
+      </div>
+
   </div>
 </template>
 
@@ -25,9 +32,8 @@ return {redirect}
 }
 </script>
 
-<style>
-/* .dashboard {
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-} */
+<style scoped>
+.dashboard {
+    margin: 0;
+}
 </style>
