@@ -1,18 +1,15 @@
 <template>
   <div v-if="registered">
-    <h2>Login</h2>
+   
     <LoginForm @login="redirectToDashboard" />
-    <p>
-      Don't have an account? <span @click="registered = false">Sign up</span>
-    </p>
+       <a class="small" @click="registered = false" >Create an Account!</a>
+    
   </div>
 
   <div v-else>
-    <h2>Signup</h2>
+   
     <SignupForm @sucessfulSignup="redirectToLogin" />
-    <p>
-      Already have an account? <span @click="registered = true">Login</span>
-    </p>
+     <a class="small" @click="registered = true" >Login</a>
   </div>
 </template>
 
@@ -44,7 +41,7 @@ export default {
 </script>
 
 <style>
-span {
+a {
   font-weight: bold;
   text-decoration: underline;
   cursor: pointer;

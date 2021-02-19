@@ -2,13 +2,13 @@
   <div class="container">
     <div class="cards row">
       <div class="col">
-        <Card title="Balance" content="500" func="z" />
+        <Card @toggleModal = "toggleModal" title="Balance" content="500" func="z" />
       </div>
       <div class="col">
-        <Card title="salman" content="H3" func="h3" />
+        <Card @toggleModal = "toggleModal" title="salman" content="H3" func="h3" />
       </div>
       <div class="col">
-        <Card title="salman" content="H3" func="h3" />
+        <Card @toggleModal = "toggleModal" title="salman" content="H3" func="h3" />
       </div>
     </div>
     <div class="charts row">
@@ -29,6 +29,7 @@
 
 <script>
 import Card from "./Card.vue";
+
 import Chart from "./Chart.vue";
 import WalletList from "./WalletList.vue";
 
@@ -36,8 +37,16 @@ export default {
   components: {
     Card,
     Chart,
-    WalletList,
+    WalletList
   },
+
+  setup(props,context){
+const toggleModal = () =>{
+context.emit("toggleModal")
+    }
+
+    return {toggleModal}
+  }
 };
 </script>
 
