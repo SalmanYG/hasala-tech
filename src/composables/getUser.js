@@ -4,6 +4,8 @@ import { auth } from '../firebase/config'
 const user = ref(auth.currentUser)
 
 auth.onAuthStateChanged(newUser => {
+  
+  
     user.value = newUser
 })
 

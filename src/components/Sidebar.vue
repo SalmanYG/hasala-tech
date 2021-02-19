@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
       <h2>{{ displayName }}</h2>
-      <router-link  class="signout" :to="{ name: 'Home' }">Sign out</router-link>
+
    
       <a @click.prevent = "handleSignOut" href="" >Sign out</a>
   </div>
@@ -15,7 +15,7 @@ export default {
   
     setup(props, context) {
         const {user} = getUser()
-        console.log(user);
+     
         
         const displayName = user.value.displayName
   console.log(displayName);
