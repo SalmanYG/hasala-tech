@@ -2,13 +2,13 @@
   <div class="container">
     <div class="cards row">
       <div class="col">
-        <Card @toggleModal = "toggleModal" title="Balance" content="500" func="z" />
+        <Card @balanceModal = "balanceModal" title="Balance" content="500" :button = true />
       </div>
       <div class="col">
-        <Card @toggleModal = "toggleModal" title="salman" content="H3" func="h3" />
+        <Card @spendingsModal = "spendingsModal" title="Spendings" content="H3" :button = true />
       </div>
       <div class="col">
-        <Card @toggleModal = "toggleModal" title="salman" content="H3" func="h3" />
+        <Card @avgModal = "avgModal" title="Average Spendings" content="H3" :button = false />
       </div>
     </div>
     <div class="charts row">
@@ -24,33 +24,53 @@
         <WalletList />
       </div>
     </div>
+     
+
+
   </div>
 </template>
 
 <script>
+ import { ref } from "vue"
 import Card from "./Card.vue";
-
+import Modal from './Modal'
 import Chart from "./Chart.vue";
 import WalletList from "./WalletList.vue";
 
 export default {
+ 
   components: {
     Card,
     Chart,
-    WalletList
+    WalletList,
+    Modal
   },
 
   setup(props,context){
-const toggleModal = () =>{
-context.emit("toggleModal")
+ 
+
+ const balanceModal = () =>{
+context.emit("balanceModal")
     }
 
-    return {toggleModal}
+    const spendingsModal = () =>{
+context.emit("spendingsModal")
+    }
+
+    const avgModal = () =>{
+context.emit("avgModal")
+    }
+
+ 
+
+    return {balanceModal,spendingsModal,avgModal}
   }
 };
 </script>
 
 <style scoped>
-.cards.row {
+
+body{
+   text-align: left;
 }
 </style>

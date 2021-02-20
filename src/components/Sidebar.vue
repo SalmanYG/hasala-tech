@@ -2,7 +2,7 @@
   <div class="sidebar">
     <h2>{{ displayName }}</h2>
 
-    <a @click.prevent="handleSignOut" href="">Sign out</a>
+    <a class="nav-link" @click.prevent="handleSignOut">Sign out</a>
   </div>
 </template>
 
@@ -12,34 +12,39 @@ import useSignOut from "../composables/signout";
 import getUser from "../composables/getUser";
 
 export default {
-    setup(props, context) {
-        const { user } = getUser();
-        
-        const displayName = user.value.displayName;
-        console.log(displayName);
+  setup(props, context) {
+    const { user } = getUser();
 
-        const { error, signOut } = useSignOut();
+    const displayName = user.value.displayName;
+    console.log(displayName);
 
-        const handleSignOut = async () => {
-        await signOut();
+    const { error, signOut } = useSignOut();
 
-        if (!error.value) {
-            context.emit("signout");
-        }
-        };
+    const handleSignOut = async () => {
+      await signOut();
 
-        return { displayName, error, handleSignOut };
-    }
+      if (!error.value) {
+        context.emit("signout");
+      }
+    };
+
+    return { displayName, error, handleSignOut };
+  }
 };
 </script>
 
-<style>
+<style scoped>
 .sidebar {
   height: 100%;
   padding: 20px 0;
   background-color: lightblue;
   text-align: center;
 }
-.signout {
+
+a {
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+  text-align: center;
 }
 </style>

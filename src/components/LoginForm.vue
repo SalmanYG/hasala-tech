@@ -43,8 +43,6 @@
                       >{{ error }}</div>
                     </div>
                   </form>
-
-                  <div class="text-center"></div>
                 </div>
               </div>
             </div>
@@ -78,5 +76,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+button{
+  margin-top: 3%;
+}
 </style>
