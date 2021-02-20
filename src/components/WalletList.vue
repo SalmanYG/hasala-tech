@@ -1,13 +1,13 @@
 <template>
   <div class="list">
       <div class="card">
-          <h5 class="card-header">
-              Month
-          </h5>
+          <div class="card-header">
+              Wallets
+          </div>
             <div class="list-group list-group-flush">
                 <div v-for="wallet in wallets" :key="wallet.id">
                     <div class="list-group-item">
-                        <h2>{{ wallet.name }}</h2>
+                        <h4>{{ wallet.name }}</h4>
                         <p>{{ wallet.balance }}SR</p>
                     </div>
                 </div>
@@ -47,5 +47,7 @@ export default {
 <style scoped>
 .list-group-item {
     cursor: pointer;
+    padding-bottom: 0;
 }
+
 </style>

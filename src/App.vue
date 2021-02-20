@@ -2,6 +2,16 @@
   <router-view />
 </template>
 
+<script>
+export default {
+  setup() {
+    $("#sidebar").mCustomScrollbar({
+      theme: "minimal"
+    })
+  }
+}
+</script>
+
 <style>
 body {
   margin: 0;

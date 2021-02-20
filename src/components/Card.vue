@@ -2,8 +2,8 @@
   <div class="card">
     <div class="card-body row">
       <div class="col-6">
-        <h4 class="card-title">{{ title }}</h4>
-        <h2 class="card-text">{{ content }}SR</h2>
+        <h5 class="card-title">{{ title }}</h5>
+        <h4 class="card-text">{{ content }}SR</h4>
       </div>
       <div v-if="func" class="add col-6">
         <button @click="toggleModal" class="btn btn-outline-primary" type="button">
@@ -31,8 +31,7 @@ context.emit("toggleModal")
 <style scoped>
 .card {
   border-left: 4px solid lightblue;
-  margin: 20px;
-  margin-left: 0;
+  margin: 25px 0;
 }
 .card-body {
   text-align: left;

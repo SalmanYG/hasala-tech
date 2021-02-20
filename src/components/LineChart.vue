@@ -1,5 +1,8 @@
 <template>
-  <div class="chart">
+  <div class="chart card">
+      <div class="card-header">
+          Spendings Per Month
+      </div>
       <canvas ref='chart'></canvas>
   </div>
 </template>
@@ -7,7 +10,7 @@
 <script>
 import { onMounted, ref } from 'vue';
 export default {
-    props: ['type', 'data'],
+    props: ['data'],
     setup(props) {
         const chart = ref(null)
 
@@ -18,12 +21,16 @@ export default {
                     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
                     datasets: [{
                         label: 'Spendings',
-                        backgroundColor: 'rgb(255, 99, 132)',
-                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'lightblue',
+                        borderColor: 'lightblue',
                         data: [0, 10, 5, 2, 20, 30, 45]
                     }]
                 },
-                options: {}
+                options: {
+                    legend: {
+                        display: false
+                    }
+                }
             })
         })
 
@@ -32,5 +39,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.chart {
+    margin-bottom: 20px;
+}
 </style>

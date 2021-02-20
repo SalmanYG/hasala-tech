@@ -1,13 +1,10 @@
 <template>
-<div class="dashboard container">
-    <div class="row">
-      <div class="sidebar col-2">
-        <Sidebar @signout="redirect" />
-      </div>
-
-      <div class="main col-10">
-        <Main @toggleModal ="toggleModal" />
-      </div>
+<div class="dashboard">
+    <div class="wrapper">
+        <Navbar @signout="redirect" @open="openSidebar"/>
+        <div class="main">
+            <Main @toggleModal ="toggleModal" />
+        </div>
     </div>
   </div>
 
@@ -22,19 +19,20 @@
 import { ref } from "vue";
 
 import Main from "../components/Main";
-import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
 import Modal from "../components/Modal";
 import { useRouter } from "vue-router";
 export default {
   components: {
     Main,
-    Sidebar,
+    Navbar,
     Modal
   },
   setup(props) {
     const showModal = ref(false);
     const heading = ref("ddds");
-    const text = ref("dsdsds");
+    const text = ref("dsdsds")
+
     const router = useRouter();
     const redirect = () => {
       router.push("/");
@@ -45,7 +43,6 @@ export default {
       console.log(showModal.value);
     };
 
-    console.log(showModal.value);
     return { heading, text, toggleModal, showModal, redirect };
   }
 };
@@ -54,5 +51,9 @@ export default {
 <style scoped>
 .dashboard {
   margin: 0;
+  padding: 0;
+}
+.main {
+    padding: 0 250px;
 }
 </style>
