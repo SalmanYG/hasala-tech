@@ -5,17 +5,17 @@
         <Card @balanceModal = "balanceModal" title="Balance" content="500" :button = true />
       </div>
       <div class="col">
-        <Card @spendingsModal = "spendingsModal" title="Spendings" content="H3" :button = true />
+        <Card @spendingsModal = "spendingsModal" title="Spendings" content="120" :button = true />
       </div>
       <div class="col">
-        <Card @avgModal = "avgModal" title="Average Spendings" content="H3" :button = false />
+        <Card @avgModal = "avgModal" title="Average Spendings" content="50" :button = false />
       </div>
     </div>
     <div class="charts row">
-      <div class="col">
+      <div class="col-6">
         <LineChart/>
       </div>
-      <div class="col">
+      <div class="col-6">
         <PieChart/>
       </div>
     </div>
@@ -34,7 +34,6 @@
 <script>
  import { ref } from "vue"
 import Card from "./Card.vue";
-
 import PieChart from "./PieChart.vue";
 import LineChart from "./LineChart.vue";
 import WalletList from "./WalletList.vue";
@@ -43,9 +42,9 @@ export default {
  
   components: {
     Card,
-    Chart,
-    WalletList,
-    Modal
+    PieChart,
+    LineChart,
+    WalletList
   },
 
   setup(props,context){

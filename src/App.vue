@@ -15,7 +15,13 @@ export default {
 <style>
 body {
   margin: 0;
-  
+  padding: 60px 0;
+}
+
+@media (max-width: 979px) {
+  body {
+    padding: 0px;
+  }
 }
 #app {
   -webkit-font-smoothing: antialiased;

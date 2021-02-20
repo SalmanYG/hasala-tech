@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-light bg-light">
+  <nav class="navbar fixed-top navbar-light bg-light">
       <div class="container-fluid">
           <div class="logo"><h2>HasalaTech</h2></div>
           <form class="content">

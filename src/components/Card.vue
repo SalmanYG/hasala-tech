@@ -3,11 +3,11 @@
 <div v-if="button===true">
   <div class="card">
     <div class="card-body row">
-      <div class="col-6">
+      <div class="col-8">
         <h5 class="card-title">{{ title }}</h5>
         <h4 class="card-text">{{ content }}SR</h4>
       </div>
-      <div  class="add col-6">
+      <div  class="add col-4">
         <button @click="toggleModal" class="btn btn-outline-primary" type="button">
             <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
@@ -20,11 +20,12 @@
 
 <div v-else>
   <div class="card">
-    <div class="card-body row">
-      <div class="col-6">
-        <h4 class="card-title">{{ title }}</h4>
-        <h2 class="card-text">{{ content }}SR</h2>
-      </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ title }}</h5>
+        <div class="inline">
+            <h4 class="card-text">{{ content }}SR</h4>
+            <p>per month</p>
+        </div>
     </div>
   </div>
 </div>
@@ -76,5 +77,14 @@ context.emit("avgModal")
 }
 .add button {
   margin: 15px 50% 0;
+}
+.inline * {
+    display: inline-block;
+}
+.inline p {
+    margin: 0 0 0 5px;
+}
+.inline h4 {
+    margin: 0;
 }
 </style>
