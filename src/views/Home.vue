@@ -1,16 +1,18 @@
 <template>
+
   <div v-if="registered">
    
     <LoginForm @login="redirectToDashboard" />
-       <a class="small" @click="registered = false" >Create an Account!</a>
-    
+     
+    <a class="nav-link" @click="registered = false" >Create an Account!</a>
   </div>
 
   <div v-else>
    
     <SignupForm @sucessfulSignup="redirectToLogin" />
-     <a class="small" @click="registered = true" >Login</a>
+        <a class="nav-link" @click="registered = true" >Login</a>
   </div>
+
 </template>
 
 <script>
@@ -40,10 +42,14 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 a {
   font-weight: bold;
   text-decoration: underline;
   cursor: pointer;
+    text-align: center;
+
 }
+
+
 </style>

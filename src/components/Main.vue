@@ -1,34 +1,38 @@
 <template>
-    <div class="container-fluid">
-        <div class="cards row">
-            <div class="col-4">
-                <Card @toggleModal = "toggleModal" title="Balance" content="500" func="z" />
-            </div>
-            <div class="col-4">
-                <Card @toggleModal = "toggleModal" title="salman" content="H3" func="h3" />
-            </div>
-            <div class="col-4">
-                <Card @toggleModal = "toggleModal" title="salman" content="H3" func="h3" />
-            </div>
-        </div>
-        <div class="charts row">
-            <div class="col-6">
-                <LineChart/>
-            </div>
-            <div class="col-6">
-                <PieChart/>
-            </div>
-        </div>
-        <div class="wallets row">
-            <div class="col">
-                <WalletList />
-            </div>
-        </div>
+  <div class="container">
+    <div class="cards row">
+      <div class="col">
+        <Card @balanceModal = "balanceModal" title="Balance" content="500" :button = true />
+      </div>
+      <div class="col">
+        <Card @spendingsModal = "spendingsModal" title="Spendings" content="H3" :button = true />
+      </div>
+      <div class="col">
+        <Card @avgModal = "avgModal" title="Average Spendings" content="H3" :button = false />
+      </div>
+    </div>
+    <div class="charts row">
+      <div class="col">
+        <LineChart/>
+      </div>
+      <div class="col">
+        <PieChart/>
+      </div>
+    </div>
+    <div class="wallets row">
+      <div class="col">
+        <WalletList />
+      </div>
+    </div>
+     
+
+
   </div>
   <div class="overlay"></div>
 </template>
 
 <script>
+ import { ref } from "vue"
 import Card from "./Card.vue";
 
 import PieChart from "./PieChart.vue";
@@ -36,51 +40,39 @@ import LineChart from "./LineChart.vue";
 import WalletList from "./WalletList.vue";
 
 export default {
+ 
   components: {
     Card,
-    PieChart,
-    LineChart,
-    WalletList
+    Chart,
+    WalletList,
+    Modal
   },
 
-  setup(props,context) {
-    const toggleModal = () => {
-        context.emit("toggleModal")
+  setup(props,context){
+ 
+
+ const balanceModal = () =>{
+context.emit("balanceModal")
     }
 
-    const openSidebar = () => {
-        console.log("side bar opened");
-        context.emit("open")
+    const spendingsModal = () =>{
+context.emit("spendingsModal")
     }
 
-    return { toggleModal, openSidebar }
+    const avgModal = () =>{
+context.emit("avgModal")
+    }
+
+ 
+
+    return {balanceModal,spendingsModal,avgModal}
   }
 };
 </script>
 
 <style scoped>
-.overlay {
-    display: none;
-    position: fixed;
-    /* full screen */
-    width: 100vw;
-    height: 100vh;
-    /* transparent black */
-    background: rgba(0, 0, 0, 0.7);
-    /* middle layer, i.e. appears below the sidebar */
-    z-index: 998;
-    opacity: 0;
-    /* animate the transition */
-    transition: all 0.5s ease-in-out;
-}
 
-.overlay.active {
-    display: block;
-    opacity: 1;
-}
-
-/* DELETE LATER */
-button {
-    margin-left: 250px;
+body{
+   text-align: left;
 }
 </style>

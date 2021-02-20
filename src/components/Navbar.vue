@@ -23,18 +23,21 @@ export default {
         const displayName = user.value.displayName;
         console.log(displayName);
 
-        const { error, signOut } = useSignOut();
+    const displayName = user.value.displayName;
+    console.log(displayName);
 
-        const handleSignOut = async () => {
-        await signOut();
+    const { error, signOut } = useSignOut();
 
-        if (!error.value) {
-            context.emit("signout");
-        }
-        };
+    const handleSignOut = async () => {
+      await signOut();
 
-        return { displayName, error, handleSignOut };
-    }
+      if (!error.value) {
+        context.emit("signout");
+      }
+    };
+
+    return { displayName, error, handleSignOut };
+  }
 };
 </script>
 

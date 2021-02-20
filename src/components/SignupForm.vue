@@ -45,18 +45,23 @@
                     </div>
 
                     <button class="btn btn-primary btn-block text-white btn-user">Sign Up</button>
-                    
+
                     <div v-if="error">
-  <div style="margin-top: 3%;" class="alert alert-danger" role="alert">{{ error }}</div>
+                      <div
+                        style="margin-top: 3%;"
+                        class="alert alert-danger"
+                        role="alert"
+                      >{{ error }}</div>
                     </div>
-                  
 
                     <div v-if="!error && submitted">
-                      <div style="margin-top: 3%;" class="alert alert-success" role="alert">Sign up is succesful !</div>
+                      <div
+                        style="margin-top: 3%;"
+                        class="alert alert-success"
+                        role="alert"
+                      >Sign up is succesful !</div>
                     </div>
                   </form>
-
-                  <div class="text-center"></div>
                 </div>
               </div>
             </div>
@@ -93,5 +98,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+button{
+  margin-top: 3%;
+}
 </style>
