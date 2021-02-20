@@ -7,7 +7,7 @@ const addToCollection = (collection) => {
 
   let error = ref(null)
 
-  const addDoc = async (doc) => {
+  const addToDoc = async (doc) => {
     error.value = null
 
     try {
@@ -19,7 +19,7 @@ const addToCollection = (collection) => {
     }
   }
 
-  return { error, addDoc }
+  return { error, addToDoc }
 
 }
 

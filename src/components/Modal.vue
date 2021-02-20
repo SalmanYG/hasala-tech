@@ -1,4 +1,11 @@
 <template>
+
+<div v-if="walletSuccess">
+    <div  class="alert alert-success" role="alert">Wallet has been added!</div>
+
+
+</div>
+
   <div v-if=" title==='balance' ">
     <div class="backdrop" @click.self="closeModal">
       <div class="card" style="width: 18rem;">
@@ -68,9 +75,7 @@
                 v-model="user"
                 type="email"
               />
-              <small id="passwordHelpBlock" class="form-text text-muted">
-                Press enter to add more users
-              </small>
+              <small class="form-text text-muted">Press enter to add more users</small>
               <div v-for="user in users" :key="user" class="pill">{{ user }}</div>
             </div>
             <button class="btn btn-primary">Add wallet</button>
@@ -79,10 +84,16 @@
       </div>
     </div>
   </div>
+
+  
+
+
+
 </template>
 
 <script>
 import { ref } from "vue";
+import addToCollection from "../composables/addToCollection";
 export default {
   props: ["title"],
   setup(props, context) {
@@ -91,6 +102,10 @@ export default {
     const name = ref("");
     const amount = ref(0);
 
+
+    const { addToDoc, error } = addToCollection("wallets");
+    const walletSuccess = ref(false);
+    console.log(walletSuccess.value);
     const handleKeydown = () => {
       if (!users.value.includes(user.value)) {
         user.value = user.value.replace(/\s/g, ""); // remove all whitespace
@@ -102,7 +117,24 @@ export default {
     const closeModal = () => {
       context.emit("close");
     };
+    const addWallet = async () => {
+      const wallet = {
+        users: users.value,
+        balance: amount.value,
+        name: name.value
+      };
 
+      await addToDoc(wallet);
+
+      if (!error.value) {
+         walletSuccess.value = true;
+          closeModal();
+       
+        console.log(2);
+       console.log(walletSuccess.value);
+       
+      }
+    };
     const addBalance = () => {
       /*
 firebaseSomething.add(amount.value)
@@ -123,7 +155,9 @@ firebaseSomething.add(amount.value)
       amount,
       addBalance,
       addSpending,
-      name
+      name,
+      addWallet,
+      walletSuccess
     };
   }
 };
@@ -164,5 +198,12 @@ button {
   padding: 8px;
   border-radius: 20px;
   font-size: 14px;
+}
+
+.alert{
+position: absolute;
+margin-left: 40%;
+top: 10;
+
 }
 </style>

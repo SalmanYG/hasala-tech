@@ -1,10 +1,14 @@
 <template>
-<div class="dashboard">
+  <div class="dashboard">
     <div class="wrapper">
-        <Navbar @signout="redirect"/>
-        <div class="main">
-            <Main @spendingsModal="spendingsModal" @balanceModal="balanceModal" @walletModal = "walletModal" />
-        </div>
+      <Navbar @signout="redirect" />
+      <div class="main">
+        <Main
+          @spendingsModal="spendingsModal"
+          @balanceModal="balanceModal"
+          @walletModal="walletModal"
+        />
+      </div>
     </div>
   </div>
 
@@ -16,12 +20,10 @@
     <Modal title="spendings" @close="toggleModal" />
   </div>
 
-
   <div v-if="showModal&&showWalletModal">
     <Modal title="wallet" @close="toggleModal" />
   </div>
-
-
+  <Modal/>
 </template>
 
 <script>
@@ -41,9 +43,9 @@ export default {
     const showModal = ref(false);
     const showBalanceModal = ref(false);
     const showSpendingsModal = ref(false);
-     const showWalletModal = ref(false);
+    const showWalletModal = ref(false);
     const heading = ref("ddds");
-    const text = ref("dsdsds")
+    const text = ref("dsdsds");
 
     const router = useRouter();
     const redirect = () => {
@@ -56,22 +58,19 @@ export default {
     };
 
     const spendingsModal = () => {
-    
-      
       showModal.value = true;
       showSpendingsModal.value = true;
     };
 
-
-    const walletModal = () =>{
-       showModal.value = true
-      showWalletModal.value = true
-    }
+    const walletModal = () => {
+      showModal.value = true;
+      showWalletModal.value = true;
+    };
     const toggleModal = () => {
       showModal.value = false;
-      showSpendingsModal.value = false
-      showBalanceModal.value = false
-       showWalletModal.value = false
+      showSpendingsModal.value = false;
+      showBalanceModal.value = false;
+      showWalletModal.value = false;
     };
 
     return {
@@ -97,7 +96,7 @@ export default {
   padding: 0;
 }
 .main {
-    padding: 0 250px;
+  padding: 0 250px;
 }
 body {
   text-align: left;
