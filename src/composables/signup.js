@@ -1,5 +1,7 @@
 import { ref } from "vue";
 import { auth } from "../firebase/config";
+import addToCollection from "./addToCollection"
+
 const error = ref(null);
 
 const signup = async (email, password, displayName) => {
@@ -11,7 +13,26 @@ const signup = async (email, password, displayName) => {
     }
     await res.user.updateProfile({ displayName });
 
-    error.value = null;
+    //create new user
+    let { error, addDoc } = addToCollection("users")
+    let user = {
+      email: email,
+    }
+    let uid = addDoc(user)
+
+    //create new wallet
+    error = addToCollection("wallets").error
+    addDoc = addToCollection("wallets").addDoc
+    let wallet = {
+      name: "default",
+      balance: 0
+    }
+    let wid = addDoc(wallet)
+
+    //add the wallet id to the user wallet
+
+
+    
     return res;
   } catch (err) {
     error.value = err.message;

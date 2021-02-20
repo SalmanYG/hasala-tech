@@ -13,7 +13,7 @@
 <script>
 import { ref } from "vue";
 import useSignOut from "../composables/signout";
-import getUser from "../composables/getUser";
+import getUser from "../composables/getUserAuth";
 
 export default {
     props: ['show'],

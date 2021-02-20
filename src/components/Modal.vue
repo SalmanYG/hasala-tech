@@ -1,4 +1,5 @@
 <template>
+<!-- Balance Modal -->
   <div v-if=" title==='balance' ">
     <div class="backdrop" @click.self="closeModal">
       <div class="card" style="width: 18rem;">
@@ -19,7 +20,7 @@
       </div>
     </div>
   </div>
-
+<!-- Spendings Modal -->
   <div v-else-if=" title==='spendings' ">
     <div class="backdrop" @click.self="closeModal">
       <div class="card" style="width: 18rem;">
@@ -40,7 +41,7 @@
       </div>
     </div>
   </div>
-
+<!-- Wallets Modal -->
   <div v-else-if=" title==='wallet' ">
     <div class="backdrop" @click.self="closeModal">
       <div class="card" style="width: 18rem;">

@@ -45,7 +45,7 @@ export default {
         ]
 
         const toggleModal = () =>{
-context.emit("walletModal")
+            context.emit("walletModal")
         }
 
         return { toggleModal,wallets }

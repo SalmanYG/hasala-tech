@@ -11,7 +11,8 @@ const addToCollection = (collection) => {
     error.value = null
 
     try {
-      await firestore.collection(collection).add(doc)
+      let res = await firestore.collection(collection).add(doc)
+      return res.id
     }
     catch(err) {
       console.log(err.message)
