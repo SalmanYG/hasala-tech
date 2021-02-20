@@ -19,12 +19,8 @@ export default {
     props: ['show'],
     setup(props, context) {
         const { user } = getUser();
-        
-        const displayName = user.value.displayName;
-        console.log(displayName);
 
     const displayName = user.value.displayName;
-    console.log(displayName);
 
     const { error, signOut } = useSignOut();
 
