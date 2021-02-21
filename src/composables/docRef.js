@@ -20,7 +20,20 @@ const docRef = (collection) => {
     }
   }
 
-  return { error, getRef }
+  const getCollRef = async () => {
+    error.value = null
+
+    try {
+      let res = await firestore.collection(collection)
+      return res
+    }
+    catch(err) {
+      console.log(err.message)
+      error.value = 'could not get the collection'
+    }
+  }
+
+  return { error, getRef, getCollRef }
 
 }
 
