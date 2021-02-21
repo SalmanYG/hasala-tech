@@ -33,6 +33,8 @@ import Main from "../components/Main";
 import Navbar from "../components/Navbar";
 import Modal from "../components/Modal";
 import { useRouter } from "vue-router";
+import getFromCollection from "../composables/getFromCollection"
+
 export default {
   components: {
     Main,
@@ -44,8 +46,8 @@ export default {
     const showBalanceModal = ref(false);
     const showSpendingsModal = ref(false);
     const showWalletModal = ref(false);
-    const heading = ref("ddds");
-    const text = ref("dsdsds");
+    const heading = ref("");
+    const text = ref("");
 
     const router = useRouter();
     const redirect = () => {

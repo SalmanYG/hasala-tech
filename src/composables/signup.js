@@ -1,63 +1,61 @@
-import { ref } from "vue";
-import { auth, firestore, arrUnion } from "../firebase/config";
+import { ref } from "vue"
+import { auth, firestore, arrUnion, timeStamp } from "../firebase/config"
 import addToCollection from "./addToCollection"
 import docRef from "./docRef"
 
 const error = ref(null)
-const user = ref(null)
-const wallet = ref(null)
 
 const signup = async (email, password, displayName) => {
-  error.value = null;
+  error.value = null
   try {
-    const res = await auth.createUserWithEmailAndPassword(email, password);
+    const res = await auth.createUserWithEmailAndPassword(email, password)
     if (!res) {
-      throw new Error("Could not complete signup");
+      throw new Error("Could not complete signup")
     }
-    await res.user.updateProfile({ displayName });
+    await res.user.updateProfile({ displayName })
+    
+    let uid = res.user.uid
 
     //create new user
     let { addDoc } = addToCollection("users")
     let user = {
-      email: email
-    }
+      email: email,
+      createdAt: timeStamp()
+    };
     //we have to use await, otherwise, uid will get a promise instead of a string
-    let uid = await addDoc(user)
+    await addDoc(user, uid)
 
     //create new wallet
     addDoc = addToCollection("wallets").addDoc
     let wallet = {
-      name: "default",
-      balance: 0
+      name: "Default",
+      balance: 0,
+      createdAt: timeStamp(),
+      users: [
+        uid
+      ]
     }
     let wid = await addDoc(wallet)
 
-    //create a document reference for user and wallet
+
+    //create a document reference for user to add the wallet id to it
     let getRef = docRef("users").getRef
     //we use await here also to get the refrence point instead of a promise
     let userRef = await getRef(uid)
-
-    getRef = docRef("wallets").getRef
-    let walletRef = await getRef(wid)
 
     //add the wallet id to the user document and vice versa
     userRef.update({
       wallets: arrUnion(wid)
     })
 
-    walletRef.update({
-      users: arrUnion(uid)
-    })
-
-
-    return res
+    return res;
   } catch (err) {
-    error.value = err.message;
+    error.value = err.message
   }
 };
 
 const useSignup = () => {
-  return { error, signup };
+  return { error, signup }
 };
 
-export default useSignup;
+export default useSignup

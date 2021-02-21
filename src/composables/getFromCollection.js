@@ -7,7 +7,9 @@ const getFromCollection = (collection) => {
 
   let error = ref(null)
   let doc = ref(null)
+  let docs = ref([])
 
+  //method to get a single document
   const getDoc = async (id) => {
     error.value = null
 
@@ -21,7 +23,24 @@ const getFromCollection = (collection) => {
     }
   }
 
-  return { error, doc, getDoc }
+  //method to get the whole collection
+  const getDocs = async () => {
+    error.value = null
+
+    try {
+      let res = await firestore.collection(collection)
+      .orderBy('createdAt', 'desc')
+      .get()
+      posts.value = res.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id }
+      })
+    }
+    catch(err) {
+      console.log(err.message)
+      error.value = 'could not get the document'
+    }
+  }
+  return { error, docs, doc, getDocs, getDoc }
 
 }
 

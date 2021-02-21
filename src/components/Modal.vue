@@ -101,7 +101,7 @@ export default {
     const amount = ref(0);
 
 
-    const { addToDoc, error } = addToCollection("wallets");
+    const { addDoc, error } = addToCollection("wallets");
     const walletSuccess = ref(false);
     console.log(walletSuccess.value);
     const handleKeydown = () => {
@@ -116,13 +116,16 @@ export default {
       context.emit("close");
     };
     const addWallet = async () => {
+      //logic to filter users
+
+      //add the filtered wallet
       const wallet = {
         users: users.value,
         balance: amount.value,
         name: name.value
       };
 
-      await addToDoc(wallet);
+      await addDoc(wallet);
 
       if (!error.value) {
          walletSuccess.value = true;

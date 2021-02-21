@@ -11,7 +11,7 @@ const docRef = (collection) => {
     error.value = null
 
     try {
-      let res = firestore.collection(collection).doc(id)
+      let res = await firestore.collection(collection).doc(id)
       return res
     }
     catch(err) {
