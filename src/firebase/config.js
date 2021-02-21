@@ -17,5 +17,6 @@ const auth = firebase.auth()
 const firestore = firebase.firestore()
 const timeStamp = firebase.firestore.FieldValue.serverTimestamp
 const arrUnion = firebase.firestore.FieldValue.arrayUnion
+const increment = firebase.firestore.FieldValue.increment
 
-export { firestore, auth, timeStamp, arrUnion };
+export { firestore, auth, timeStamp, arrUnion, increment };
