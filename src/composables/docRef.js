@@ -5,14 +5,13 @@ import { firestore } from '../firebase/config'
 
 const docRef = (collection) => {
 
-  let error = ref(null)
-
+  let error = ref({})
+  let result = ref({})
+  let collResult = ref({})
   const getRef = async (id) => {
-    error.value = null
 
     try {
-      let res = await firestore.collection(collection).doc(id)
-      return res
+      result.value = await firestore.collection(collection).doc(id)
     }
     catch(err) {
       console.log(err.message)
@@ -21,11 +20,9 @@ const docRef = (collection) => {
   }
 
   const getCollRef = async () => {
-    error.value = null
 
     try {
-      let res = await firestore.collection(collection)
-      return res
+      collResult.value = await firestore.collection(collection)
     }
     catch(err) {
       console.log(err.message)
@@ -33,7 +30,7 @@ const docRef = (collection) => {
     }
   }
 
-  return { error, getRef, getCollRef }
+  return { error, getRef, getCollRef, result, collResult }
 
 }
 

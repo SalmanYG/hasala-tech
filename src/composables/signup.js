@@ -37,14 +37,15 @@ const signup = async (email, password, displayName) => {
     }
     let wid = await addDoc(wallet)
 
-
+    
     //create a document reference for user to add the wallet id to it
-    let getRef = docRef("users").getRef
+    const { getRef, result } = docRef("users")
+
     //we use await here also to get the refrence point instead of a promise
-    let userRef = await getRef(uid)
+    await getRef(uid)
 
     //add the wallet id to the user document and vice versa
-    userRef.update({
+    result.value.update({
       wallets: arrUnion(wid)
     })
 

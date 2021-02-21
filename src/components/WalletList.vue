@@ -24,31 +24,14 @@
 <script>
 import { ref } from 'vue'
 export default {
+    props: ['wallets'],
     setup(props,context) {
-        const wallets = ref([])
-        wallets.value = [
-            {
-                id: 1,
-                name: "wallet1",
-                balance: 500
-            },
-            {
-                id: 2,
-                name: "wallet2",
-                balance: 4200
-            },
-            {
-                id: 3,
-                name: "wallet3",
-                balance: 100
-            }
-        ]
 
         const toggleModal = () =>{
             context.emit("walletModal")
         }
 
-        return { toggleModal,wallets }
+        return { toggleModal }
     }
 };
 </script>

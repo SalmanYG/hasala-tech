@@ -5,13 +5,13 @@ import { firestore } from '../firebase/config'
 
 const getFromCollection = (collection) => {
 
-  let error = ref(null)
-  let doc = ref(null)
+  let error = ref({})
+  let doc = ref({})
   let docs = ref([])
 
   //method to get a single document
   const getDoc = async (id) => {
-    error.value = null
+    
 
     try {
       let res = await firestore.collection(collection).doc(id).get()
@@ -25,13 +25,13 @@ const getFromCollection = (collection) => {
 
   //method to get the whole collection
   const getDocs = async () => {
-    error.value = null
+    
 
     try {
       let res = await firestore.collection(collection)
       .orderBy('createdAt', 'desc')
       .get()
-      posts.value = res.docs.map((doc) => {
+      docs.value = res.docs.map((doc) => {
         return { ...doc.data(), id: doc.id }
       })
     }

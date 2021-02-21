@@ -65,16 +65,16 @@
               <input v-model="amount" class="form-control" type="number" />
             </div>
             <div class="form-group">
-              <label>Users's Email</label>
+              <label>Users' Email</label>
 
               <input
                 class="form-control"
                 @keydown.enter.prevent="handleKeydown"
-                v-model="user"
+                v-model="email"
                 type="email"
               />
               <small class="form-text text-muted">Press enter to add more users</small>
-              <div v-for="user in users" :key="user" class="pill">{{ user }}</div>
+              <div v-for="email in emails" :key="email" class="pill">{{ email }}</div>
             </div>
             <button class="btn btn-primary">Add wallet</button>
           </form>
@@ -90,52 +90,95 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import addToCollection from "../composables/addToCollection";
+import { ref } from "vue"
+import { arrUnion, timeStamp } from "../firebase/config"
+import addToCollection from "../composables/addToCollection"
+import getUser from "../composables/getUserAuth"
+import docRef from "../composables/docRef"
+
 export default {
   props: ["title"],
   setup(props, context) {
-    const users = ref([]);
-    const user = ref("");
+
+    const users = ref([])
+    const emails = ref([])
+    const email = ref("")
     const name = ref("");
     const amount = ref(0);
 
 
-    const { addDoc, error } = addToCollection("wallets");
+    const { addDoc, error } = addToCollection("wallets")
+    const { getRef, result } = docRef("users")
+    const { getCollRef, collResult } = docRef("users")
+
+    const { user } = getUser()
+    let uid = user.value.uid
+
     const walletSuccess = ref(false);
-    console.log(walletSuccess.value);
+
+    //used for filtering repeated emails
     const handleKeydown = () => {
-      if (!users.value.includes(user.value)) {
-        user.value = user.value.replace(/\s/g, ""); // remove all whitespace
-        users.value.push(user.value);
+      if (!emails.value.includes(email.value)) {
+        email.value = email.value.replace(/\s/g, ""); // remove all whitespace
+        emails.value.push(email.value);
       }
-      user.value = "";
+      email.value = "";
     };
 
+    //closes modal
     const closeModal = () => {
       context.emit("close");
-    };
+    }
+
+    //Logic for adding wallets
     const addWallet = async () => {
       //logic to filter users
+      console.log("Users before adding current user", users.value)
+      users.value.push(uid) //add the current user first
+      console.log("Users after adding current user", users.value)
 
-      //add the filtered wallet
+      //this try-catch block, weirdly, gets executed after the block below it (???)
+      //sometimes, it doesn't get executed whatsoever...
+      try {
+        await getCollRef()
+        emails.value.forEach(async (email) => {
+          let query = await collResult.value.where("email", "==", email).get()
+          try {
+            users.value.push(await query.docs[0].id)
+            console.log("users after each query", users.value)
+          } catch (error) {
+            console.log(error.message)
+          }
+        })
+      } catch (error) {
+        console.log(error.message)
+      }
+
+      //add the filtered wallet (this gets executed before the block above it??)
+      console.log("users added to wallets", users.value)
       const wallet = {
         users: users.value,
         balance: amount.value,
-        name: name.value
+        name: name.value,
+        createdAt: timeStamp()
       };
-
-      await addDoc(wallet);
+      let wid = await addDoc(wallet);
+      
+      //add wallet id to users
+      console.log("users used to update wallets array", users.value)
+      users.value.forEach(async (user) => {
+        await getRef(user)
+        result.value.update({
+          wallets: arrUnion(wid) //add to existing wallet array
+        })
+      })
 
       if (!error.value) {
          walletSuccess.value = true;
           closeModal();
-       
-        console.log(2);
-       console.log(walletSuccess.value);
-       
       }
     };
+
     const addBalance = () => {
       /*
 firebaseSomething.add(amount.value)
@@ -150,8 +193,8 @@ firebaseSomething.add(amount.value)
 
     return {
       handleKeydown,
-      users,
-      user,
+      emails,
+      email,
       closeModal,
       amount,
       addBalance,
