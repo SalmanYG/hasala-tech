@@ -126,7 +126,7 @@ export default {
     };
 
     //closes modal
-    const closeModal = () => {
+     const closeModal = () => {
       context.emit("close");
     }
 

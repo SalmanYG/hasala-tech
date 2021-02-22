@@ -21,7 +21,7 @@
     </div>
     <div class="wallets row">
       <div class="col">
-        <WalletList @walletModal="walletModal" :wallets="queryRes"/>
+        <WalletList @showWallet="showWallet" @addWalletModal="addWalletModal" :wallets="queryRes"/>
       </div>
     </div>
   </div>
@@ -95,11 +95,15 @@ export default {
     };
 
    
-    const walletModal = () => {
-      context.emit("walletModal");
+    const addWalletModal = () => {
+      context.emit("addWalletModal");
     };
 
-    return { balanceModal, spendingsModal, walletModal, doc, queryRes };
+ const showWallet = () => {
+
+      context.emit("showWallet");
+    };
+    return { balanceModal, spendingsModal, addWalletModal,showWallet, doc, queryRes };
   }
 };
 </script>

@@ -6,24 +6,29 @@
         <Main
           @spendingsModal="spendingsModal"
           @balanceModal="balanceModal"
-          @walletModal="walletModal"
+          @addWalletModal="addWalletModal"
+          @showWallet="showWallet"
         />
       </div>
     </div>
   </div>
+  <div v-if="showModal && showWalletModal">
+    <Wallet @close="toggleModal" />
+  </div>
 
-  <div v-if="showModal&&showBalanceModal">
+  <div v-if="showModal && showBalanceModal">
     <Modal title="balance" @close="toggleModal" />
   </div>
 
-  <div v-if="showModal&&showSpendingsModal">
+  <div v-if="showModal && showSpendingsModal">
     <Modal title="spendings" @close="toggleModal" />
   </div>
 
-  <div v-if="showModal&&showWalletModal">
+  <div v-if="showModal && showAddWallet">
     <Modal title="wallet" @close="toggleModal" />
   </div>
-  <Modal/>
+
+  <Modal />
 </template>
 
 <script>
@@ -32,19 +37,22 @@ import { ref } from "vue";
 import Main from "../components/Main";
 import Navbar from "../components/Navbar";
 import Modal from "../components/Modal";
+import Wallet from "../components/Wallet";
 import { useRouter } from "vue-router";
-import getFromCollection from "../composables/getFromCollection"
+import getFromCollection from "../composables/getFromCollection";
 
 export default {
   components: {
     Main,
     Navbar,
-    Modal
+    Modal,
+    Wallet,
   },
   setup(props) {
     const showModal = ref(false);
     const showBalanceModal = ref(false);
     const showSpendingsModal = ref(false);
+    const showAddWallet = ref(false);
     const showWalletModal = ref(false);
     const heading = ref("");
     const text = ref("");
@@ -64,31 +72,41 @@ export default {
       showSpendingsModal.value = true;
     };
 
-    const walletModal = () => {
+    const addWalletModal = () => {
+      showModal.value = true;
+      showAddWallet.value = true;
+    };
+    const showWallet = () => {
+      
+
       showModal.value = true;
       showWalletModal.value = true;
     };
     const toggleModal = () => {
+      
       showModal.value = false;
       showSpendingsModal.value = false;
       showBalanceModal.value = false;
+      showAddWallet.value = false;
       showWalletModal.value = false;
     };
 
     return {
       showBalanceModal,
       showSpendingsModal,
+      showAddWallet,
       showWalletModal,
       toggleModal,
       showModal,
+      showWallet,
       balanceModal,
       spendingsModal,
-      walletModal,
+      addWalletModal,
       heading,
       text,
-      redirect
+      redirect,
     };
-  }
+  },
 };
 </script>
 
