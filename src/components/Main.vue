@@ -73,10 +73,16 @@ export default {
       // })
 
       //Logic for querying data
+
+      //first we get the reference of the wallets document
       await getCollRef()
-      let query = await collResult.value.where("users", "array-contains", uid).get()
-      queryRes.value = await query.docs.map((document) => {
-        return {...document.data(), id: document.id} //returns the queried docs into a single array of objects.
+
+      //this code triggers whenever we update any document inside wallets collection
+      await collResult.value.where("users", "array-contains", uid).onSnapshot((snap) => {
+        let results = snap.docs.map((document) => {
+          return {...document.data(), id: document.id}
+        })
+        queryRes.value = results
       })
     })
 

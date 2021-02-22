@@ -14,8 +14,10 @@ const getFromCollection = (collection) => {
     
 
     try {
-      let res = await firestore.collection(collection).doc(id).get()
-      doc.value = { ...res.data(), id: res.id }
+      await firestore.collection(collection).doc(id).onSnapshot((snap) => {
+        doc.value = { ...snap.data(), id: snap.id }
+      })
+      
     }
     catch(err) {
       console.log(err.message)
@@ -28,12 +30,14 @@ const getFromCollection = (collection) => {
     
 
     try {
-      let res = await firestore.collection(collection)
-      .orderBy('createdAt', 'desc')
-      .get()
-      docs.value = res.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id }
-      })
+      await firestore.collection(collection)
+            .orderBy('createdAt', 'desc')
+            .onSnapshot((snap) => {
+              let documents = snap.docs.map((doc) => {
+                return { ...doc.data(), id: doc.id }
+              })
+              docs.value = documents
+            })
     }
     catch(err) {
       console.log(err.message)

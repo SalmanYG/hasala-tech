@@ -180,9 +180,7 @@ export default {
     };
 
     const addBalance = () => {
-      /*
-firebaseSomething.add(amount.value)
-*/
+      
     };
 
     const addSpending = () => {
