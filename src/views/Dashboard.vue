@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
     <div class="wrapper">
-      <Navbar @signout="redirect" />
+      <Navbar :displayName="displayName" @signout="redirect" />
       <div class="main">
         <Main
           @spendingsModal="spendingsModal"
@@ -57,6 +57,8 @@ export default {
     const heading = ref("");
     const text = ref("");
 
+ 
+
     const router = useRouter();
     const redirect = () => {
       router.push("/");
@@ -103,6 +105,7 @@ export default {
       heading,
       text,
       redirect,
+     
     };
   },
 };

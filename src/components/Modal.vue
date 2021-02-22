@@ -1,10 +1,10 @@
 <template>
-<!-- Success Alert -->
-<div v-if="walletSuccess">
-    <div  class="alert alert-success" role="alert">Wallet has been added!</div>
-</div>
-<!-- Balance Modal -->
-  <div v-if=" title==='balance' ">
+  <!-- Success Alert -->
+  <div v-if="walletSuccess">
+    <div class="alert alert-success" role="alert">Wallet has been added!</div>
+  </div>
+  <!-- Balance Modal -->
+  <div v-if="title === 'balance'">
     <div class="backdrop" @click.self="closeModal">
       <div class="card" style="width: 18rem;">
         <div class="card-body">
@@ -24,8 +24,8 @@
       </div>
     </div>
   </div>
-<!-- Spendings Modal -->
-  <div v-else-if=" title==='spendings' ">
+  <!-- Spendings Modal -->
+  <div v-else-if="title === 'spendings'">
     <div class="backdrop" @click.self="closeModal">
       <div class="card" style="width: 18rem;">
         <div class="card-body">
@@ -45,8 +45,8 @@
       </div>
     </div>
   </div>
-<!-- Wallets Modal -->
-  <div v-else-if=" title==='wallet' ">
+  <!-- Wallets Modal -->
+  <div v-else-if="title === 'wallet'">
     <div class="backdrop" @click.self="closeModal">
       <div class="card" style="width: 18rem;">
         <div class="card-body">
@@ -73,7 +73,7 @@
                 v-model="email"
                 type="email"
               />
-              <small class="form-text text-muted">Press 'Enter' to add the user</small>
+              <small class="form-text text-muted">Press 'Enter' to add user</small>
               <div v-for="email in emails" :key="email" class="pill">{{ email }}</div>
             </div>
             <button class="btn btn-primary">Add wallet</button>
@@ -82,37 +82,40 @@
       </div>
     </div>
   </div>
-
-  
-
-
-
 </template>
 
 <script>
-import { ref } from "vue"
-import { arrUnion, timeStamp } from "../firebase/config"
-import addToCollection from "../composables/addToCollection"
-import getUser from "../composables/getUserAuth"
-import docRef from "../composables/docRef"
-
+import { ref, onMounted } from "vue";
+import { arrUnion, timeStamp } from "../firebase/config";
+import addToCollection from "../composables/addToCollection";
+import getUser from "../composables/getUserAuth";
+import docRef from "../composables/docRef";
+import { auth } from "../firebase/config";
 export default {
   props: ["title"],
   setup(props, context) {
-
-    const users = ref([])
-    const emails = ref([])
-    const email = ref("")
+    const users = ref([]);
+    const emails = ref([]);
+    const email = ref("");
     const name = ref("");
     const amount = ref(0);
 
+  // to get user before loading page
+    const user = ref(auth.currentUser);
+    let uid = ref({})
+    onMounted(async () => {
+      auth.onAuthStateChanged((newUser) => {
+        if (newUser) {
+          user.value = newUser;
+           uid.value = user.value.uid;
+        }
+      });
+    });
 
-    const { addDoc, error } = addToCollection("wallets")
-    const { getRef, result } = docRef("users")
-    const { getCollRef, collResult } = docRef("users")
 
-    const { user } = getUser()
-    let uid = user.value.uid
+    const { addDoc, error } = addToCollection("wallets");
+    const { getRef, result } = docRef("users");
+    const { getCollRef, collResult } = docRef("users");
 
     const walletSuccess = ref(false);
 
@@ -126,15 +129,15 @@ export default {
     };
 
     //closes modal
-     const closeModal = () => {
+    const closeModal = () => {
       context.emit("close");
-    }
+    };
 
     //Logic for adding wallets
     const addWallet = async () => {
 
       //logic to filter users
-      users.value.push(uid) //add the current user first
+      users.value.push(uid.value) //add the current user first
 
       //makes the query to get the document id that has an email found in emails array
       try {
@@ -145,23 +148,22 @@ export default {
             //lazy way to access the single document (it's the official way :\)
             users.value.push(query.docs[0].id)
           } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
           }
         }
       } catch (error) {
-        console.log(error.message)
+        console.log(error.message);
       }
 
       //add the filtered wallet
-      console.log("users added to wallets", users.value)
       const wallet = {
         users: users.value,
         balance: amount.value,
         name: name.value,
-        createdAt: timeStamp()
+        createdAt: timeStamp(),
       };
       let wid = await addDoc(wallet);
-      
+
       //add wallet id to users
       console.log("users used to update wallets array", users.value)
       for await(let user of users.value) {
@@ -173,14 +175,12 @@ export default {
 
       //close the modal
       if (!error.value) {
-         walletSuccess.value = true;
-          closeModal();
+        walletSuccess.value = true;
+        closeModal();
       }
     };
 
-    const addBalance = () => {
-      
-    };
+    const addBalance = () => {};
 
     const addSpending = () => {
       /*
@@ -198,9 +198,9 @@ firebaseSomething.add(amount.value)
       addSpending,
       name,
       addWallet,
-      walletSuccess
+      walletSuccess,
     };
-  }
+  },
 };
 </script>
 
@@ -241,10 +241,9 @@ button {
   font-size: 14px;
 }
 
-.alert{
-position: absolute;
-margin-left: 40%;
-top: 10;
-
+.alert {
+  position: absolute;
+  margin-left: 40%;
+  top: 10;
 }
 </style>

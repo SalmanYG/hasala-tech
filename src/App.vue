@@ -3,8 +3,21 @@
 </template>
 
 <script>
+import { auth } from "./firebase/config";
+import { onMounted,ref } from 'vue';
 export default {
   setup() {
+const user = ref(auth.currentUser);
+
+ auth.onAuthStateChanged(  (newUser) => {
+   user.value = newUser;
+});
+
+
+
+
+
+
     $("#sidebar").mCustomScrollbar({
       theme: "minimal"
     })
@@ -28,6 +41,5 @@ body {
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   padding: 0;
-
 }
 </style>
