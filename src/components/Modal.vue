@@ -73,7 +73,7 @@
                 v-model="email"
                 type="email"
               />
-              <small class="form-text text-muted">Press enter to add more users</small>
+              <small class="form-text text-muted">Press 'Enter' to add the user</small>
               <div v-for="email in emails" :key="email" class="pill">{{ email }}</div>
             </div>
             <button class="btn btn-primary">Add wallet</button>
@@ -132,29 +132,27 @@ export default {
 
     //Logic for adding wallets
     const addWallet = async () => {
-      //logic to filter users
-      console.log("Users before adding current user", users.value)
-      users.value.push(uid) //add the current user first
-      console.log("Users after adding current user", users.value)
 
-      //this try-catch block, weirdly, gets executed after the block below it (???)
-      //sometimes, it doesn't get executed whatsoever...
+      //logic to filter users
+      users.value.push(uid) //add the current user first
+
+      //makes the query to get the document id that has an email found in emails array
       try {
         await getCollRef()
-        emails.value.forEach(async (email) => {
+        for await(let email of emails.value) {
           let query = await collResult.value.where("email", "==", email).get()
           try {
-            users.value.push(await query.docs[0].id)
-            console.log("users after each query", users.value)
+            //lazy way to access the single document (it's the official way :\)
+            users.value.push(query.docs[0].id)
           } catch (error) {
             console.log(error.message)
           }
-        })
+        }
       } catch (error) {
         console.log(error.message)
       }
 
-      //add the filtered wallet (this gets executed before the block above it??)
+      //add the filtered wallet
       console.log("users added to wallets", users.value)
       const wallet = {
         users: users.value,
@@ -166,13 +164,14 @@ export default {
       
       //add wallet id to users
       console.log("users used to update wallets array", users.value)
-      users.value.forEach(async (user) => {
+      for await(let user of users.value) {
         await getRef(user)
         result.value.update({
           wallets: arrUnion(wid) //add to existing wallet array
         })
-      })
+      }
 
+      //close the modal
       if (!error.value) {
          walletSuccess.value = true;
           closeModal();

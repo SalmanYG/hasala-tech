@@ -7,13 +7,13 @@
           @spendingsModal="spendingsModal"
           @balanceModal="balanceModal"
           @addWalletModal="addWalletModal"
-          @showWallet="showWallet"
+          @edit="editWallet"
         />
       </div>
     </div>
   </div>
   <div v-if="showModal && showWalletModal">
-    <Wallet @close="toggleModal" />
+    <WalletModal @close="toggleModal" />
   </div>
 
   <div v-if="showModal && showBalanceModal">
@@ -37,7 +37,7 @@ import { ref } from "vue";
 import Main from "../components/Main";
 import Navbar from "../components/Navbar";
 import Modal from "../components/Modal";
-import Wallet from "../components/Wallet";
+import WalletModal from "../components/WalletModal";
 import { useRouter } from "vue-router";
 import getFromCollection from "../composables/getFromCollection";
 
@@ -46,7 +46,7 @@ export default {
     Main,
     Navbar,
     Modal,
-    Wallet,
+    WalletModal,
   },
   setup(props) {
     const showModal = ref(false);
@@ -76,9 +76,7 @@ export default {
       showModal.value = true;
       showAddWallet.value = true;
     };
-    const showWallet = () => {
-      
-
+    const editWallet = () => {
       showModal.value = true;
       showWalletModal.value = true;
     };
@@ -98,7 +96,7 @@ export default {
       showWalletModal,
       toggleModal,
       showModal,
-      showWallet,
+      editWallet,
       balanceModal,
       spendingsModal,
       addWalletModal,

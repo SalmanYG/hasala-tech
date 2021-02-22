@@ -11,11 +11,7 @@
           </div>
             <div class="list-group list-group-flush">
                 <div v-for="wallet in wallets" :key="wallet.id">
-                    <div @click = "showWallet" class="list-group-item">
-                        
-                        <h4>{{ wallet.name }}</h4>
-                        <p>{{ wallet.balance }}SR</p>
-                    </div>
+                    <Wallet :wallet="wallet" @show="showWallet"/>
                 </div>
             </div>
       </div>
@@ -24,20 +20,24 @@
 
 <script>
 import { ref } from 'vue'
+import Wallet from './Wallet'
 export default {
     props: ['wallets'],
+    components: {
+        Wallet
+    },
     setup(props,context) {
 
         const addWalletModal = () =>{
             context.emit("addWalletModal")
         }
 
-         const showWallet = () =>{
+         const showWallet = (wallet) =>{
              
-            context.emit("showWallet")
+            context.emit("show", wallet)
         }
 
-        return { addWalletModal,showWallet }
+        return { addWalletModal, showWallet }
     }
 };
 </script>

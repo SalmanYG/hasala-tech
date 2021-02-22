@@ -2,7 +2,7 @@
   <div v-if="doc" class="container">
     <div class="cards row">
       <div class="col">
-        <Card @balanceModal="balanceModal" title="Balance" :content="doc.email" :button="true" />
+        <Card @balanceModal="balanceModal" title="Balance" :content="shownWallet.balance" :button="true" />
       </div>
       <div class="col">
         <Card @spendingsModal="spendingsModal" title="Spendings" content="120" :button="true" />
@@ -21,7 +21,7 @@
     </div>
     <div class="wallets row">
       <div class="col">
-        <WalletList @showWallet="showWallet" @addWalletModal="addWalletModal" :wallets="queryRes"/>
+        <WalletList @show="showWallet" @addWalletModal="addWalletModal" :wallets="queryRes"/>
       </div>
     </div>
   </div>
@@ -51,6 +51,7 @@ export default {
 
     //variables and refs that aren't from composables
     const queryRes = ref([])
+    const shownWallet = ref({balance: -1}) //for now
 
     //for getting returned values from composables
     const { doc, getDoc } = getFromCollection("users") //to get documents
@@ -60,12 +61,13 @@ export default {
     //to execute anthing else (+ methods that require await)
     onMounted(async () => {
 
-      //Logic to get document/s
+      //Logic to get document/s (for user)
       const { user } = getUser()
       const uid = user.value.uid
       
       await getDoc(uid)
 
+      
       //Logic for updating data
       // await getRef(uid)
       // result.value.update({
@@ -78,13 +80,24 @@ export default {
       await getCollRef()
 
       //this code triggers whenever we update any document inside wallets collection
-      await collResult.value.where("users", "array-contains", uid).onSnapshot((snap) => {
-        let results = snap.docs.map((document) => {
+      let results = []
+      await collResult.value.where("users", "array-contains", uid).orderBy("createdAt").onSnapshot( (snap) => {
+        results = snap.docs.map((document) => {
           return {...document.data(), id: document.id}
         })
         queryRes.value = results
+        console.log(queryRes.value)
       })
+      //we make the default as the displayed wallet by default
+      //can be changed later using emits and events
+      // shownWallet.value = queryRes.value[0]
+      
     })
+
+    //event that handles when a wallet gets clicked
+    const showWallet = (wallet) => {
+      shownWallet.value = wallet
+    };
 
     const balanceModal = () => {
       context.emit("balanceModal");
@@ -99,11 +112,8 @@ export default {
       context.emit("addWalletModal");
     };
 
- const showWallet = () => {
-
-      context.emit("showWallet");
-    };
-    return { balanceModal, spendingsModal, addWalletModal,showWallet, doc, queryRes };
+    
+    return { balanceModal, spendingsModal, addWalletModal, showWallet, doc, queryRes, shownWallet };
   }
 };
 </script>
