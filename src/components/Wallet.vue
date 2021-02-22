@@ -38,7 +38,6 @@
           <button @click="deleteWallet" id="delete" class="btn btn-danger">
             Delete wallet
           </button>
-          <!-- lmao apperantly you can't do handleSubmit(delete) because it's reserved by javascript -->
         </form>
       </div>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
     <div class="wrapper">
-      <Navbar @signout="redirect" />
+      <Navbar :displayName="displayName" @signout="redirect" />
       <div class="main">
         <Main
           @spendingsModal="spendingsModal"
@@ -38,6 +38,7 @@ import Main from "../components/Main";
 import Navbar from "../components/Navbar";
 import Modal from "../components/Modal";
 import Wallet from "../components/Wallet";
+import getUser from "../composables/getUserAuth"
 import { useRouter } from "vue-router";
 import getFromCollection from "../composables/getFromCollection";
 
@@ -56,6 +57,8 @@ export default {
     const showWalletModal = ref(false);
     const heading = ref("");
     const text = ref("");
+
+ 
 
     const router = useRouter();
     const redirect = () => {
@@ -105,6 +108,7 @@ export default {
       heading,
       text,
       redirect,
+     
     };
   },
 };

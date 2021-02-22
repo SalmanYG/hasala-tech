@@ -38,6 +38,7 @@ import WalletList from "./WalletList.vue";
 import getUser from "../composables/getUserAuth"
 import getFromCollection from "../composables/getFromCollection"
 import docRef from "../composables/docRef"
+import { auth } from "../firebase/config";
 
 export default {
   components: {
@@ -51,7 +52,7 @@ export default {
 
     //variables and refs that aren't from composables
     const queryRes = ref([])
-
+const lol = ref([])
     //for getting returned values from composables
     const { doc, getDoc } = getFromCollection("users") //to get documents
     const { getRef, result } = docRef("users") //to update single document
@@ -60,11 +61,30 @@ export default {
     //to execute anthing else (+ methods that require await)
     onMounted(async () => {
 
-      //Logic to get document/s
-      const { user } = getUser()
-      const uid = user.value.uid
+    const user = ref(auth.currentUser);
+    let uid = ""
+ 
+     await auth.onAuthStateChanged(async (newUser) => {
+        if (newUser) {
+          user.value = newUser;
+          uid = user.value.uid;
+          console.log(uid);
+              await getDoc(uid)
+
+                   await collResult.value.where("users", "array-contains", uid).onSnapshot((snap) => {
+        let results = snap.docs.map((document) => {
+          return {...document.data(), id: document.id}
+        })
+        queryRes.value = results
+        
+      })
+        }
+      });
+   
+    
+      console.log("before getDoc",uid);
       
-      await getDoc(uid)
+  
 
       //Logic for updating data
       // await getRef(uid)
@@ -76,15 +96,12 @@ export default {
 
       //first we get the reference of the wallets document
       await getCollRef()
+console.log("before snapshot",uid);
 
       //this code triggers whenever we update any document inside wallets collection
-      await collResult.value.where("users", "array-contains", uid).onSnapshot((snap) => {
-        let results = snap.docs.map((document) => {
-          return {...document.data(), id: document.id}
-        })
-        queryRes.value = results
-      })
+ 
     })
+ 
 
     const balanceModal = () => {
       context.emit("balanceModal");
