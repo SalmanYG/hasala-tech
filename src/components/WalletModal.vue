@@ -5,7 +5,7 @@
         <button @click="closeModal" type="button" class="close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h5 class="card-title">Wallet's Name</h5>
+        <h5 class="card-title">{{ wallet.name }}</h5>
 
         <form @submit.prevent="">
           <div class="form-group">
@@ -46,20 +46,33 @@
 
 <script>
 export default {
+  props: ['wallet'],
   setup(props, context) {
+    // const name = ref("")
+    // const amount = ref(0)
+    // const emails = ref([])
+    // const email = ref("")
+
+    //logic for getting emails of all users available
+
+    //logic for adding another email to the list
+
+    const saveWallet = () => {
+      //logic for updating value of the wallet
+    };
+
+    const deleteWallet = () => {
+      //logic for deleting current wallet and all its existence (in users)
+      //algorithm would be to delete wallet id from all users whose ids are in wallet.users
+      //so, get all users. delete wallet.id from user.wallets
+      //then delete wallet safely.
+    };
+
     const closeModal = () => {
       context.emit("close");
     };
 
-    const saveWallet = () => {
-      console.log("save");
-    };
-
-    const deleteWallet = () => {
-      console.log("delete");
-    };
-
-    return { closeModal, saveWallet,deleteWallet };
+    return { closeModal, saveWallet, deleteWallet };
   },
 };
 </script>

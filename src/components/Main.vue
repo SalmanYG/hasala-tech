@@ -21,7 +21,7 @@
     </div>
     <div class="wallets row">
       <div class="col">
-        <WalletList @show="showWallet" @addWalletModal="addWalletModal" :wallets="queryRes"/>
+        <WalletList @show="showWallet" @edit="editWallet" @addWalletModal="addWalletModal" :wallets="queryRes"/>
       </div>
     </div>
   </div>
@@ -123,8 +123,12 @@ console.log("before snapshot",uid);
       context.emit("addWalletModal");
     };
 
+    const editWallet = (wallet) => {
+      context.emit("edit", wallet)
+    }
+
     
-    return { balanceModal, spendingsModal, addWalletModal, showWallet, doc, queryRes, shownWallet };
+    return { balanceModal, spendingsModal, addWalletModal, showWallet, doc, queryRes, shownWallet, editWallet };
   }
 };
 </script>

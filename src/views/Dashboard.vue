@@ -12,20 +12,24 @@
       </div>
     </div>
   </div>
+  <!-- Edit Wallet -->
   <div v-if="showModal && showWalletModal">
-    <WalletModal @close="toggleModal" />
+    <WalletModal :wallet="wallet" @close="toggleModal" @edit="editWallet"/>
   </div>
 
+  <!-- Add Wallet -->
+  <div v-if="showModal && showAddWallet">
+    <Modal title="wallet" @close="toggleModal" />
+  </div>
+
+  <!-- Balance Modal -->
   <div v-if="showModal && showBalanceModal">
     <Modal title="balance" @close="toggleModal" />
   </div>
 
+  <!-- Spendings Modal -->
   <div v-if="showModal && showSpendingsModal">
     <Modal title="spendings" @close="toggleModal" />
-  </div>
-
-  <div v-if="showModal && showAddWallet">
-    <Modal title="wallet" @close="toggleModal" />
   </div>
 
   <Modal />
@@ -39,7 +43,6 @@ import Navbar from "../components/Navbar";
 import Modal from "../components/Modal";
 import WalletModal from "../components/WalletModal";
 import { useRouter } from "vue-router";
-import getFromCollection from "../composables/getFromCollection";
 
 export default {
   components: {
@@ -56,7 +59,7 @@ export default {
     const showWalletModal = ref(false);
     const heading = ref("");
     const text = ref("");
-
+    const wallet = ref({})
  
 
     const router = useRouter();
@@ -78,9 +81,11 @@ export default {
       showModal.value = true;
       showAddWallet.value = true;
     };
-    const editWallet = () => {
+    const editWallet = (el) => {
       showModal.value = true;
       showWalletModal.value = true;
+      //named the variable 'el' due to an existing variable named wallet
+      wallet.value = el
     };
     const toggleModal = () => {
       
@@ -105,7 +110,7 @@ export default {
       heading,
       text,
       redirect,
-     
+      wallet
     };
   },
 };
