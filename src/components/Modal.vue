@@ -73,11 +73,23 @@
                 v-model="email"
                 type="email"
               />
-              <small class="form-text text-muted">Press 'Enter' to add user</small>
-              <div v-for="email in emails" :key="email" class="pill">{{ email }}</div>
+              <small class="form-text text-muted"
+                >Press 'Enter' to add user</small
+              >
+              <div v-for="email in emails" :key="email" class="pill">
+                {{ email }}
+              </div>
+                <button class="btn btn-primary">Add wallet</button>
+               
             </div>
-            <button class="btn btn-primary">Add wallet</button>
+          
+
+          
           </form>
+             <div v-if="error">
+         <div class="alert alert-danger modal-alert" role="alert">{{ error }}</div>
+            </div>
+     
         </div>
       </div>
     </div>
@@ -100,18 +112,17 @@ export default {
     const name = ref("");
     const amount = ref(0);
 
-  // to get user before loading page
+    // to get user before loading page
     const user = ref(auth.currentUser);
-    let uid = ref({})
+    let uid = ref({});
     onMounted(async () => {
       auth.onAuthStateChanged((newUser) => {
         if (newUser) {
           user.value = newUser;
-           uid.value = user.value.uid;
+          uid.value = user.value.uid;
         }
       });
     });
-
 
     const { addDoc, error } = addToCollection("wallets");
     const { getRef, result } = docRef("users");
@@ -135,18 +146,17 @@ export default {
 
     //Logic for adding wallets
     const addWallet = async () => {
-
       //logic to filter users
-      users.value.push(uid.value) //add the current user first
+      users.value.push(uid.value); //add the current user first
 
       //makes the query to get the document id that has an email found in emails array
       try {
-        await getCollRef()
-        for await(let email of emails.value) {
-          let query = await collResult.value.where("email", "==", email).get()
+        await getCollRef();
+        for await (let email of emails.value) {
+          let query = await collResult.value.where("email", "==", email).get();
           try {
             //lazy way to access the single document (it's the official way :\)
-            users.value.push(query.docs[0].id)
+            users.value.push(query.docs[0].id);
           } catch (error) {
             console.log(error.message);
           }
@@ -155,26 +165,32 @@ export default {
         console.log(error.message);
       }
 
-      //add the filtered wallet
-      const wallet = {
-        users: users.value,
-        balance: amount.value,
-        name: name.value,
-        createdAt: timeStamp(),
-      };
-      let wid = await addDoc(wallet);
-
-      //add wallet id to users
-      console.log("users used to update wallets array", users.value)
-      for await(let user of users.value) {
-        await getRef(user)
-        result.value.update({
-          wallets: arrUnion(wid) //add to existing wallet array
-        })
+      //
+      if (name.value.toUpperCase() === "default".toUpperCase()) {
+        error.value = "Default wallet already created";
       }
 
-      //close the modal
       if (!error.value) {
+        //add the filtered wallet
+        const wallet = {
+          users: users.value,
+          balance: amount.value,
+          name: name.value,
+          createdAt: timeStamp(),
+        };
+        let wid = await addDoc(wallet);
+
+        //add wallet id to users
+        console.log("users used to update wallets array", users.value);
+        for await (let user of users.value) {
+          await getRef(user);
+          result.value.update({
+            wallets: arrUnion(wid), //add to existing wallet array
+          });
+        }
+
+        //close the modal
+
         walletSuccess.value = true;
         closeModal();
       }
@@ -199,6 +215,7 @@ firebaseSomething.add(amount.value)
       name,
       addWallet,
       walletSuccess,
+      error,
     };
   },
 };
@@ -242,8 +259,12 @@ button {
 }
 
 .alert {
-  position: absolute;
-  margin-left: 40%;
-  top: 10;
+
+  
+}
+
+.modal-alert{
+
+margin-top: 3%;
 }
 </style>
