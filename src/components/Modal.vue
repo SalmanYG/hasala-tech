@@ -79,17 +79,14 @@
               <div v-for="email in emails" :key="email" class="pill">
                 {{ email }}
               </div>
-                <button class="btn btn-primary">Add wallet</button>
-               
+              <button class="btn btn-primary">Add wallet</button>
             </div>
-          
-
-          
           </form>
-             <div v-if="error">
-         <div class="alert alert-danger modal-alert" role="alert">{{ error }}</div>
+          <div v-if="error">
+            <div class="alert alert-danger modal-alert" role="alert">
+              {{ error }}
             </div>
-     
+          </div>
         </div>
       </div>
     </div>
@@ -103,8 +100,9 @@ import addToCollection from "../composables/addToCollection";
 import getUser from "../composables/getUserAuth";
 import docRef from "../composables/docRef";
 import { auth } from "../firebase/config";
+import updateWallet from "../composables/updateWallet";
 export default {
-  props: ["title"],
+  props: ["title", "wallets"],
   setup(props, context) {
     const users = ref([]);
     const emails = ref([]);
@@ -127,6 +125,7 @@ export default {
     const { addDoc, error } = addToCollection("wallets");
     const { getRef, result } = docRef("users");
     const { getCollRef, collResult } = docRef("users");
+    const { updateBalance } = updateWallet();
 
     const walletSuccess = ref(false);
 
@@ -165,7 +164,7 @@ export default {
         console.log(error.message);
       }
 
-      //
+      // the name "default" for wallets is restricted
       if (name.value.toUpperCase() === "default".toUpperCase()) {
         error.value = "Default wallet already created";
       }
@@ -196,7 +195,9 @@ export default {
       }
     };
 
-    const addBalance = () => {};
+    const addBalance = async () => {
+      await updateBalance(uid.value, amount.value);
+    };
 
     const addSpending = () => {
       /*
@@ -259,12 +260,9 @@ button {
 }
 
 .alert {
-
-  
 }
 
-.modal-alert{
-
-margin-top: 3%;
+.modal-alert {
+  margin-top: 3%;
 }
 </style>

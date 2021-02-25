@@ -15,4 +15,4 @@ const getUser = () => {
   return { user };
 };
 
-export default getUser;
+export default {getUser,user};

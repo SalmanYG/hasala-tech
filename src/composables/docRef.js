@@ -8,6 +8,7 @@ const docRef = (collection) => {
   let error = ref({})
   let result = ref({})
   let collResult = ref({})
+  
   const getRef = async (id) => {
 
     try {

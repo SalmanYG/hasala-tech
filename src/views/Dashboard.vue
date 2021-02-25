@@ -14,22 +14,22 @@
   </div>
   <!-- Edit Wallet -->
   <div v-if="showModal && showWalletModal">
-    <WalletModal :wallet="wallet" @close="toggleModal" @edit="editWallet"/>
+    <WalletModal :wallet="wallet" @close="toggleModal" @edit="editWallet" />
   </div>
 
   <!-- Add Wallet -->
   <div v-if="showModal && showAddWallet">
-    <Modal title="wallet" @close="toggleModal" />
+    <Modal title="wallet" :wallet="wallet" @close="toggleModal" />
   </div>
 
   <!-- Balance Modal -->
   <div v-if="showModal && showBalanceModal">
-    <Modal title="balance" @close="toggleModal" />
+    <Modal title="balance" :wallet="wallet" @close="toggleModal" />
   </div>
 
   <!-- Spendings Modal -->
   <div v-if="showModal && showSpendingsModal">
-    <Modal title="spendings" @close="toggleModal" />
+    <Modal title="spendings" :wallet="wallet" @close="toggleModal" />
   </div>
 
   <Modal />
@@ -59,8 +59,7 @@ export default {
     const showWalletModal = ref(false);
     const heading = ref("");
     const text = ref("");
-    const wallet = ref({})
- 
+    const wallet = ref({});
 
     const router = useRouter();
     const redirect = () => {
@@ -85,10 +84,9 @@ export default {
       showModal.value = true;
       showWalletModal.value = true;
       //named the variable 'el' due to an existing variable named wallet
-      wallet.value = el
+      wallet.value = el;
     };
     const toggleModal = () => {
-      
       showModal.value = false;
       showSpendingsModal.value = false;
       showBalanceModal.value = false;
@@ -110,7 +108,7 @@ export default {
       heading,
       text,
       redirect,
-      wallet
+      wallet,
     };
   },
 };

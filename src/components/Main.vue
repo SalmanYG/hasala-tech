@@ -113,7 +113,7 @@ export default {
   setup(props, context) {
     //variables and refs that aren't from composables
     const queryRes = ref([]);
-    const shownWallet = ref({ balance: -1 }); //for now
+    const shownWallet = ref({ balance: 0 });
     const isDefault = ref(true);
     //for getting returned values from composables
     const { doc, getDoc } = getFromCollection("users"); //to get documents
@@ -141,12 +141,11 @@ export default {
 
               queryRes.value = results;
 
-              //cycle through all wallets and find default wallet 
+              //cycle through all wallets and find default wallet
               for (let i = 0; i < results.length; i++) {
                 if (results[i].name === "Default")
-                  shownWallet.value = results[i]
+                  shownWallet.value = results[i];
               }
-
             });
         }
       });
@@ -186,8 +185,6 @@ export default {
     const editWallet = (wallet) => {
       context.emit("edit", wallet);
     };
-
-
 
     return {
       balanceModal,

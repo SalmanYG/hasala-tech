@@ -46,7 +46,7 @@
 
 <script>
 export default {
-  props: ['wallet'],
+  props: ["wallet"],
   setup(props, context) {
     // const name = ref("")
     // const amount = ref(0)
