@@ -4,7 +4,7 @@
     <div class="alert alert-success" role="alert">Wallet has been added!</div>
   </div>
   <!-- Balance Modal -->
-  <div v-if="title === 'balance'">
+  <div v-if="title === 'balance' && wallet">
     <div class="backdrop" @click.self="closeModal">
       <div class="card" style="width: 18rem;">
         <div class="card-body">
@@ -16,7 +16,7 @@
           <form @submit.prevent="addBalance">
             <div class="form-group">
               <label>Amount (SR)</label>
-              <input v-model="amount" class="form-control" type="number" />
+              <input v-model="amount" class="form-control" type="number"/>
             </div>
             <button class="btn btn-primary">Add balance</button>
           </form>
@@ -25,7 +25,7 @@
     </div>
   </div>
   <!-- Spendings Modal -->
-  <div v-else-if="title === 'spendings'">
+  <div v-else-if="title === 'spendings' && wallet">
     <div class="backdrop" @click.self="closeModal">
       <div class="card" style="width: 18rem;">
         <div class="card-body">
@@ -102,14 +102,14 @@ import docRef from "../composables/docRef";
 import { auth } from "../firebase/config";
 import updateWallet from "../composables/updateWallet";
 export default {
-  props: ["title", "wallets"],
+  props: ["title", "wallet"],
   setup(props, context) {
     const users = ref([]);
     const emails = ref([]);
     const email = ref("");
     const name = ref("");
     const amount = ref(0);
-
+    
     // to get user before loading page
     const user = ref(auth.currentUser);
     let uid = ref({});
@@ -120,6 +120,8 @@ export default {
           uid.value = user.value.uid;
         }
       });
+
+      
     });
 
     const { addDoc, error } = addToCollection("wallets");
@@ -171,13 +173,13 @@ export default {
 
       if (!error.value) {
         //add the filtered wallet
-        const wallet = {
+        let wal = {
           users: users.value,
           balance: amount.value,
           name: name.value,
           createdAt: timeStamp(),
         };
-        let wid = await addDoc(wallet);
+        let wid = await addDoc(wal);
 
         //add wallet id to users
         console.log("users used to update wallets array", users.value);
@@ -196,7 +198,8 @@ export default {
     };
 
     const addBalance = async () => {
-      await updateBalance(uid.value, amount.value);
+      await updateBalance(amount.value);
+      
     };
 
     const addSpending = () => {

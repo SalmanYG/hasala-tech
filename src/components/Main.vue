@@ -115,12 +115,15 @@ export default {
     const queryRes = ref([]);
     const shownWallet = ref({ balance: 0 });
     const isDefault = ref(true);
+
+    const spendings = ref([])
+    const spendingTotal = ref(0)
     //for getting returned values from composables
     const { doc, getDoc } = getFromCollection("users"); //to get documents
     const { getRef, result } = docRef("users"); //to update single document
     const { getCollRef, collResult } = docRef("wallets"); //to query from a collection
 
-    //to execute anthing else (+ methods that require await)
+    //to execute anything else (+ methods that require await)
     onMounted(async () => {
       const user = ref(auth.currentUser);
       let uid = "";
@@ -131,7 +134,9 @@ export default {
           uid = user.value.uid;
 
           await getDoc(uid);
+          await getCollRef();
 
+          //cycle through wallets collection to find the user's wallets
           await collResult.value
             .where("users", "array-contains", uid)
             .onSnapshot((snap) => {
@@ -150,18 +155,19 @@ export default {
         }
       });
 
+      //logic to get spendings array
+
+      //logic to get spendings total
+
+      //logic to get average spendings
+
+
+
       //Logic for updating data
       // await getRef(uid)
       // result.value.update({
       //   name: "horny on main"
       // })
-
-      //Logic for querying data
-
-      //first we get the reference of the wallets document
-      await getCollRef();
-
-      //this code triggers whenever we update any document inside wallets collection
     });
 
     //event that handles when a wallet gets clicked
@@ -171,11 +177,11 @@ export default {
     };
 
     const balanceModal = () => {
-      context.emit("balanceModal");
+      context.emit("balanceModal", shownWallet.value);
     };
 
     const spendingsModal = () => {
-      context.emit("spendingsModal");
+      context.emit("spendingsModal", shownWallet.value);
     };
 
     const addWalletModal = () => {

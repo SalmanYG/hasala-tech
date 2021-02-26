@@ -21,8 +21,8 @@ export default {
                     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
                     datasets: [{
                         label: 'Spendings',
-                        backgroundColor: 'lightblue',
-                        borderColor: 'lightblue',
+                        backgroundColor: '#01b0db',
+                        borderColor: '#025b7f',
                         data: [0, 10, 5, 2, 20, 30, 45]
                     }]
                 },

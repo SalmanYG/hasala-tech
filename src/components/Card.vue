@@ -9,14 +9,14 @@
         <div class="add col-4">
           <button
             @click="toggleModal"
-            class="btn btn-outline-primary"
+            class="btn"
             type="button"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="16"
-              fill="currentColor"
+              fill="#047ca4"
               class="bi bi-plus-circle-fill"
               viewBox="0 0 16 16"
             >
@@ -50,11 +50,9 @@ export default {
     const toggleModal = () => {
       if (props.title === "Balance") {
         context.emit("balanceModal");
-      } else if (props.title === "Spendings") {
+      } else {
         context.emit("spendingsModal");
-      } else if (props.title === "Average Spendings") {
-        context.emit("avgModal");
-      }
+      } 
     };
     return { toggleModal };
   },
@@ -63,7 +61,7 @@ export default {
 
 <style scoped>
 .card {
-  border-left: 4px solid lightblue;
+  border-left: 4px solid #047ca4;
   margin: 25px 0;
 }
 .card-body {
@@ -75,6 +73,9 @@ export default {
 }
 .add button {
   margin: 15px 50% 0;
+}
+.btn {
+  border-color: #047ca4
 }
 .inline * {
   display: inline-block;

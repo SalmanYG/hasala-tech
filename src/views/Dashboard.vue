@@ -19,7 +19,7 @@
 
   <!-- Add Wallet -->
   <div v-if="showModal && showAddWallet">
-    <Modal title="wallet" :wallet="wallet" @close="toggleModal" />
+    <Modal title="wallet" @close="toggleModal" />
   </div>
 
   <!-- Balance Modal -->
@@ -66,14 +66,18 @@ export default {
       router.push("/");
     };
 
-    const balanceModal = () => {
+    const balanceModal = (el) => {
       showModal.value = true;
       showBalanceModal.value = true;
+      //named the variable 'el' due to an existing variable named wallet
+      wallet.value = el
     };
 
-    const spendingsModal = () => {
+    const spendingsModal = (el) => {
       showModal.value = true;
       showSpendingsModal.value = true;
+      //named the variable 'el' due to an existing variable named wallet
+      wallet.value = el
     };
 
     const addWalletModal = () => {

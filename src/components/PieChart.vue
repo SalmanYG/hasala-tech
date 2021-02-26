@@ -22,7 +22,18 @@ export default {
                 data: {
                     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
                     datasets: [{
-                        data: [12, 10, 5, 2, 20, 30, 45]
+                        data: [12, 10, 5, 2, 20, 30, 45],
+                        backgroundColor: [
+                            '#004c6d',
+                            '#025b7f',
+                            '#036b91',
+                            '#047ca4',
+                            '#048db6',
+                            '#039ec8',
+                            '#01b0db',
+                            '#00c2ed',
+                            '#00d4ff'
+                        ]
                     }]
                 },
                 options: {
