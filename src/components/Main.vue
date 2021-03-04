@@ -115,6 +115,7 @@ export default {
     const queryRes = ref([]);
     const shownWallet = ref({ balance: 0 });
     const isDefault = ref(true);
+    let hasSorted = false
 
     const spendings = ref([])
     const spendingTotal = ref(0)
@@ -146,10 +147,22 @@ export default {
 
               queryRes.value = results;
 
-              //cycle through all wallets and find default wallet
-              for (let i = 0; i < results.length; i++) {
-                if (results[i].name === "Default")
-                  shownWallet.value = results[i];
+              //cycle through all wallets
+              if(!hasSorted){
+                //find default wallet (for the first time only)
+                for (let i = 0; i < results.length; i++) {
+                  if (results[i].name === "Default"){
+                    shownWallet.value = results[i];
+                    hasSorted = true
+                  }
+                }
+              } else {
+                //find shown wallet and display it
+                for (let i = 0; i < results.length; i++) {
+                  if (results[i].id === shownWallet.value.id){
+                    shownWallet.value = results[i];
+                  }
+                }
               }
             });
         }

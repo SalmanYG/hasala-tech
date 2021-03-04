@@ -127,8 +127,8 @@ export default {
     const { addDoc, error } = addToCollection("wallets");
     const { getRef, result } = docRef("users");
     const { getCollRef, collResult } = docRef("users");
-    const { updateBalance } = updateWallet();
-
+    const { updateBalance } = updateWallet(props.wallet.id);
+    
     const walletSuccess = ref(false);
 
     //used for filtering repeated emails
@@ -199,7 +199,7 @@ export default {
 
     const addBalance = async () => {
       await updateBalance(amount.value);
-      
+      closeModal()
     };
 
     const addSpending = () => {

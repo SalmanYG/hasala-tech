@@ -31,8 +31,6 @@
   <div v-if="showModal && showSpendingsModal">
     <Modal title="spendings" :wallet="wallet" @close="toggleModal" />
   </div>
-
-  <Modal />
 </template>
 
 <script>
