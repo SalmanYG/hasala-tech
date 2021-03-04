@@ -32,7 +32,6 @@
     <Modal title="spendings" :wallet="wallet" @close="toggleModal" />
   </div>
 
-  <Modal />
 </template>
 
 <script>

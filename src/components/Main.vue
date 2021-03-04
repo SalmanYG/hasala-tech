@@ -1,5 +1,5 @@
 <template>
-  <div v-if="doc && isDefault">
+  <div v-if="doc">
     <div class="container">
       <div class="cards row">
         <div class="col">
@@ -43,49 +43,8 @@
     </div>
   </div>
 
-  <div v-else-if="doc && !isDefault">
-    <div class="container">
-      <div class="cards row">
-        <div class="col">
-          <Card
-            @balanceModal="balanceModal"
-            title="Balance"
-            :content="shownWallet.balance"
-            :button="true"
-          />
-        </div>
-        <div class="col">
-          <Card
-            @spendingsModal="spendingsModal"
-            title="Spendings"
-            content="120"
-            :button="true"
-          />
-        </div>
-        <div class="col">
-          <Card title="Average Spendings" content="50" :button="false" />
-        </div>
-      </div>
-      <div class="charts row">
-        <div class="col-6">
-          <LineChart />
-        </div>
-        <div class="col-6">
-          <PieChart />
-        </div>
-      </div>
-      <div class="wallets row">
-        <div class="col">
-          <WalletList
-            @show="showWallet"
-            @edit="editWallet"
-            @addWalletModal="addWalletModal"
-            :wallets="queryRes"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
+
+  <Modal :wallet="shownWallet"/>
 
   <div class="overlay"></div>
 </template>
@@ -96,6 +55,7 @@ import Card from "./Card.vue";
 import PieChart from "./PieChart.vue";
 import LineChart from "./LineChart.vue";
 import WalletList from "./WalletList.vue";
+import Modal from "./Modal.vue";
 
 import getUser from "../composables/getUserAuth";
 import getFromCollection from "../composables/getFromCollection";
@@ -108,13 +68,14 @@ export default {
     PieChart,
     LineChart,
     WalletList,
+    Modal
   },
 
   setup(props, context) {
     //variables and refs that aren't from composables
     const queryRes = ref([]);
     const shownWallet = ref({ balance: 0 });
-    const isDefault = ref(true);
+   
 
     const spendings = ref([])
     const spendingTotal = ref(0)
@@ -172,7 +133,7 @@ export default {
 
     //event that handles when a wallet gets clicked
     const showWallet = (wallet) => {
-      isDefault.value = false;
+    
       shownWallet.value = wallet;
     };
 
@@ -200,8 +161,7 @@ export default {
       doc,
       queryRes,
       shownWallet,
-      editWallet,
-      isDefault,
+      editWallet
     };
   },
 };
