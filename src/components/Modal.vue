@@ -1,4 +1,7 @@
 <template>
+
+
+
   <!-- Success Alert -->
   <div v-if="walletSuccess">
     <div class="alert alert-success" role="alert">Wallet has been added!</div>
@@ -91,6 +94,9 @@
       </div>
     </div>
   </div>
+
+  
+
 </template>
 
 <script>
@@ -102,14 +108,15 @@ import docRef from "../composables/docRef";
 import { auth } from "../firebase/config";
 import updateWallet from "../composables/updateWallet";
 export default {
-  props: ["title", "wallet"],
+  props: ["title","wallet"],
   setup(props, context) {
     const users = ref([]);
     const emails = ref([]);
     const email = ref("");
     const name = ref("");
     const amount = ref(0);
-    
+ 
+
     // to get user before loading page
     const user = ref(auth.currentUser);
     let uid = ref({});
@@ -219,7 +226,7 @@ firebaseSomething.add(amount.value)
       name,
       addWallet,
       walletSuccess,
-      error,
+      error
     };
   },
 };
