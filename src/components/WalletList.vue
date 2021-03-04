@@ -52,6 +52,12 @@ export default {
     padding-bottom: 0;
 }
 
+.list-group {
+    max-height: 250px;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
 button{
   position: absolute;
   right: 10px;
