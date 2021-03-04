@@ -134,7 +134,7 @@ export default {
     const { addDoc, error } = addToCollection("wallets");
     const { getRef, result } = docRef("users");
     const { getCollRef, collResult } = docRef("users");
-    const { updateBalance } = updateWallet(props.wallet.id);
+    
     
     const walletSuccess = ref(false);
 
@@ -205,6 +205,7 @@ export default {
     };
 
     const addBalance = async () => {
+      const { updateBalance } = updateWallet(props.wallet.id);
       await updateBalance(amount.value);
       closeModal()
     };

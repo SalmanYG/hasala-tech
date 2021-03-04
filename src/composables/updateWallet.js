@@ -9,7 +9,7 @@ const updateWallet = (wid) =>{
         const {getRef, result} = docRef("wallets")
         await getRef(wid)
         result.value.update({
-            balance: increment(val)
+            balance: firebase.firestore.FieldValue.increment(val)
         })
     
     }
