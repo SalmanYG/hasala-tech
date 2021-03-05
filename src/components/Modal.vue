@@ -41,7 +41,21 @@
             <div class="form-group">
               <label>Amount (SR)</label>
               <input v-model="amount" class="form-control" type="number" />
+              <label>Category</label>
+              <select required name="category" id="category" class="form-select" v-model="category">
+                <option selected value="">Select a category</option>
+                <option value="Housing">Housing</option>
+                <option value="Transportation">Transportation</option>
+                <option value="Food">Food</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Personal">Personal</option>
+                <option value="Bills">Bills</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Emergency">Emergency</option>
+              </select>
             </div>
+            
             <button class="btn btn-primary">Add spending</button>
           </form>
         </div>
@@ -115,7 +129,7 @@ export default {
     const email = ref("");
     const name = ref("");
     const amount = ref(0);
- 
+    const category = ref("")
 
     // to get user before loading page
     const user = ref(auth.currentUser);
@@ -210,10 +224,12 @@ export default {
       closeModal()
     };
 
-    const addSpending = () => {
-      /*
-firebaseSomething.add(amount.value)
-*/
+    const addSpending = async () => {
+      const { updateSpendings, updateBalance } = updateWallet(props.wallet.id);
+      await updateSpendings(amount.value, category.value)
+      //decrement the balance by the amount spent
+      await updateBalance(-amount.value);
+      closeModal()
     };
 
     return {
@@ -227,7 +243,8 @@ firebaseSomething.add(amount.value)
       name,
       addWallet,
       walletSuccess,
-      error
+      error,
+      category
     };
   },
 };

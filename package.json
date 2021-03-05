@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "bootstrap-icons": "^1.4.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "firebase": "^8.2.7",

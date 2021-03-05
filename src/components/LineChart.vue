@@ -1,7 +1,7 @@
 <template>
   <div class="chart card">
       <div class="card-header">
-          Spendings Per Month
+          Spendings Last 30 Days
       </div>
       <canvas ref='chart'></canvas>
   </div>
@@ -10,7 +10,7 @@
 <script>
 import { onMounted, ref } from 'vue';
 export default {
-    props: ['data'],
+    props: ['wallet'],
     setup(props) {
         const chart = ref(null)
 

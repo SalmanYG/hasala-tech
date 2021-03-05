@@ -10,7 +10,7 @@
 <script>
 import { onMounted, ref } from 'vue';
 export default {
-    props: ['data'],
+    props: ['wallet'],
     setup(props) {
         const chart = ref(null)
 

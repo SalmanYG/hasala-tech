@@ -1,5 +1,5 @@
 import docRef from "./docRef"
-import {firestore, increment} from "../firebase/config"
+import { firestore, increment, arrUnion, timeStamp } from "../firebase/config"
 import firebase from "firebase/app";
 import "firebase/firestore";
 
@@ -18,7 +18,20 @@ const updateWallet = (wid) =>{
         })
     
     }
-return {updateBalance}
+
+    const updateSpendings = async (amount, category) =>{
+
+        const walletRef = firestore.collection("wallets").doc(wid)
+        walletRef.update({
+            spendings: arrUnion({
+                amount: amount,
+                category: category,
+                createdAt: firebase.firestore.Timestamp.now()
+            })
+        })
+    
+    }
+return {updateBalance, updateSpendings}
 }
 
 

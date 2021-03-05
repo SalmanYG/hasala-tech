@@ -24,10 +24,10 @@
       </div>
       <div class="charts row">
         <div class="col-6">
-          <LineChart />
+          <LineChart :wallet="shownWallet"/>
         </div>
         <div class="col-6">
-          <PieChart />
+          <PieChart :wallet="shownWallet"/>
         </div>
       </div>
       <div class="wallets row">
