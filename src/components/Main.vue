@@ -14,12 +14,12 @@
           <Card
             @spendingsModal="spendingsModal"
             title="Spendings"
-            content="120"
+            :content="spendingsTotal"
             :button="true"
           />
         </div>
         <div class="col">
-          <Card title="Average Spendings" content="50" :button="false" />
+          <Card title="Average Spendings" :content="spendingsAvg" :button="false" />
         </div>
       </div>
       <div class="charts row">
@@ -78,7 +78,8 @@ export default {
     let hasSorted = false
 
     const spendings = ref([])
-    const spendingTotal = ref(0)
+    const spendingsTotal = ref(0)
+    const spendingsAvg = ref(0)
     //for getting returned values from composables
     const { doc, getDoc } = getFromCollection("users"); //to get documents
     const { getRef, result } = docRef("users"); //to update single document
@@ -115,6 +116,9 @@ export default {
                     shownWallet.value = results[i];
                     hasSorted = true
                   }
+                  if(results[i].spendings){
+                    //logic to get through all needed spendings (last 30 days or something we'll figure it)
+                  }
                 }
               } else {
                 //find shown wallet and display it
@@ -122,8 +126,13 @@ export default {
                   if (results[i].id === shownWallet.value.id){
                     shownWallet.value = results[i];
                   }
+                  if(results[i].spendings){
+                    //logic to get through all needed spendings (last 30 days or something we'll figure it)
+                  }
                 }
               }
+
+              
             });
         }
       });
@@ -172,7 +181,9 @@ export default {
       doc,
       queryRes,
       shownWallet,
-      editWallet
+      editWallet,
+      spendingsTotal,
+      spendingsAvg
     };
   },
 };
