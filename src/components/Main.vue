@@ -115,9 +115,7 @@ export default {
                   if (results[i].name === "Default"){
                     shownWallet.value = results[i];
                     hasSorted = true
-                  }
-                  if(results[i].spendings){
-                    //logic to get through all needed spendings (last 30 days or something we'll figure it)
+                    break
                   }
                 }
               } else {
@@ -126,10 +124,19 @@ export default {
                   if (results[i].id === shownWallet.value.id){
                     shownWallet.value = results[i];
                   }
-                  if(results[i].spendings){
-                    //logic to get through all needed spendings (last 30 days or something we'll figure it)
-                  }
                 }
+              }
+
+              //logic for going through all spendings
+              try {
+                //logic to get spendings array by the last 30 days (sent to the charts)
+
+                //logic to get spendings total to display it in the total card
+
+                //logic to get average spendings to display it in the avg card
+
+              } catch (e) {
+                //set them all to zero
               }
 
               
@@ -137,11 +144,7 @@ export default {
         }
       });
 
-      //logic to get spendings array
-
-      //logic to get spendings total
-
-      //logic to get average spendings
+      
 
 
 
