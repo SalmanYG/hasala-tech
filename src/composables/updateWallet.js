@@ -1,38 +1,59 @@
-import docRef from "./docRef"
-import { firestore, increment, arrUnion, timeStamp } from "../firebase/config"
+import docRef from "./docRef";
+import { ref, onMounted } from "vue";
+import {
+  firestore,
+  increment,
+  arrUnion,
+  auth,
+  timeStamp,
+} from "../firebase/config";
 import firebase from "firebase/app";
 import "firebase/firestore";
 
+const user = ref(auth.currentUser);
+let uid = ref({});
+auth.onAuthStateChanged((newUser) => {
+  if (newUser) {
+    user.value = newUser;
+    uid.value = user.value.uid;
+  }
+});
 
-const updateWallet = (wid) =>{
+const updateWallet = (wid) => {
+  const updateBalance = async (val) => {
+    // const {getRef, result} = docRef("wallets")
+    // await getRef(wid)
 
-    const updateBalance = async (val) =>{
-        
-        // const {getRef, result} = docRef("wallets")
-        // await getRef(wid)
+    const walletRef = firestore.collection("wallets").doc(wid);
 
-        const walletRef = firestore.collection("wallets").doc(wid)
+    walletRef.update({
+      balance: increment(val),
+    });
+  };
 
-        walletRef.update({
-            balance: firebase.firestore.FieldValue.increment(val)
-        })
-    
-    }
+  const updateSpendings = async (amount, category) => {
+    const walletRef = firestore.collection("wallets").doc(wid);
+    walletRef.update({
+      spendings: arrUnion({
+        amount: amount,
+        category: category,
+        createdAt: firebase.firestore.Timestamp.now(),
+      }),
+    });
+  };
 
-    const updateSpendings = async (amount, category) =>{
+  const deleteWallet = async () => {
+    const userRef = firestore.collection("users").doc(uid.value);
 
-        const walletRef = firestore.collection("wallets").doc(wid)
-        walletRef.update({
-            spendings: arrUnion({
-                amount: amount,
-                category: category,
-                createdAt: firebase.firestore.Timestamp.now()
-            })
-        })
-    
-    }
-return {updateBalance, updateSpendings}
-}
+    userRef.update({
+      wallets: firebase.firestore.FieldValue.arrayRemove(wid),
+    });
 
+     const walletRef = firestore.collection("wallets").doc(wid);
+    walletRef.delete(); 
+  };
 
-export default updateWallet
+  return { updateBalance, updateSpendings, deleteWallet };
+};
+
+export default updateWallet;
