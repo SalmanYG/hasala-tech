@@ -1,7 +1,7 @@
 <template>
   <div class="chart card">
       <div class="card-header">
-          Spendings Per Category
+          Spendings Per Category (Last 30 Days)
       </div>
       <canvas ref='chart'></canvas>
   </div>
@@ -10,13 +10,11 @@
 <script>
 import { onMounted, ref } from 'vue';
 export default {
-    props: ['wallet'],
+    props: ['spendings'],
     setup(props) {
         const chart = ref(null)
-
-        //logic to spread two arrays, one for labels, other for quantity, then use them as labels and dataset
-        //try to randomise the colors of the borders
         onMounted(() => {
+            
             let chartjs = new Chart(chart.value, {
                 type: "pie",
                 data: {

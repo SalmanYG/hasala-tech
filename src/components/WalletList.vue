@@ -54,7 +54,7 @@ export default {
 
 .list-group {
     max-height: 250px;
-    overflow: scroll;
+    overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
 }
 

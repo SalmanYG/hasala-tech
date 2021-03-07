@@ -22,12 +22,12 @@
           <Card title="Average Spendings" :content="spendingsAvg" :button="false" />
         </div>
       </div>
-      <div class="charts row">
+      <div v-if="spendings" class="charts row">
         <div class="col-6">
-          <LineChart :wallet="shownWallet"/>
+          <LineChart :spendings="spendings"/>
         </div>
         <div class="col-6">
-          <PieChart :wallet="shownWallet"/>
+          <PieChart :spendings="spendings"/>
         </div>
       </div>
       <div class="wallets row">
@@ -77,9 +77,10 @@ export default {
     const shownWallet = ref({});
     let hasSorted = false
 
-    const spendings = ref([])
-    const spendingsTotal = ref(0)
-    const spendingsAvg = ref(0)
+    const spendings = ref([]) //to move the data of all related spendings to charts
+    const spendingsTotal = ref(0) //to display in the card
+    const spendingsAvg = ref(0) ////to display in the card
+
     //for getting returned values from composables
     const { doc, getDoc } = getFromCollection("users"); //to get documents
     const { getRef, result } = docRef("users"); //to update single document
@@ -131,12 +132,33 @@ export default {
               try {
                 //logic to get spendings array by the last 30 days (sent to the charts)
 
+                //the method for comparing time below works, but needs some optimization
+                let spendArr = shownWallet.value.spendings
+                let length = spendArr.length
+                let monthAgo = new Date()
+                monthAgo.setDate(monthAgo.getDate() - 31)
+                let count = 0
+                let total = 0
+                for (let i = length - 1; i >= 0; i--) {
+                  let spendingDate = spendArr[i].createdAt.toDate()
+                  if ( spendingDate >= monthAgo ){
+                    spendings.value[count] = spendArr[i]
+                    total += parseInt(spendArr[i].amount)
+                    count++
+                  }
+                }
+                spendingsTotal.value = total
+                spendingsAvg.value = (total/(count + 1)).toFixed(2)
+                console.log(spendings.value)
+                console.log(spendingsTotal.value)
+                console.log(spendingsAvg.value)
                 //logic to get spendings total to display it in the total card
 
                 //logic to get average spendings to display it in the avg card
 
               } catch (e) {
                 //set them all to zero
+                console.log("error ", e.message);
               }
 
               
@@ -186,7 +208,8 @@ export default {
       shownWallet,
       editWallet,
       spendingsTotal,
-      spendingsAvg
+      spendingsAvg,
+      spendings
     };
   },
 };
