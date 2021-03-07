@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { auth } from "../firebase/config";
+import updateWallet from "../composables/updateWallet";
 export default {
   props: ["wallet"],
   setup(props, context) {
@@ -61,11 +63,15 @@ export default {
       //logic for updating value of the wallet
     };
 
-    const deleteWallet = () => {
+    const deleteWallet = async () => {
       //logic for deleting current wallet and all its existence (in users)
       //algorithm would be to delete wallet id from all users whose ids are in wallet.users
       //so, get all users. delete wallet.id from user.wallets
       //then delete wallet safely.
+
+      const { deleteWallet } = updateWallet(props.wallet.id);
+      await deleteWallet();
+      closeModal();
     };
 
     const closeModal = () => {

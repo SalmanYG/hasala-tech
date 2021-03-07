@@ -115,11 +115,9 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import { arrUnion, timeStamp } from "../firebase/config";
+import { auth,arrUnion, timeStamp } from "../firebase/config";
 import addToCollection from "../composables/addToCollection";
-import getUser from "../composables/getUserAuth";
 import docRef from "../composables/docRef";
-import { auth } from "../firebase/config";
 import updateWallet from "../composables/updateWallet";
 export default {
   props: ["title","wallet"],

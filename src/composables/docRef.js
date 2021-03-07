@@ -23,7 +23,7 @@ const docRef = (collection) => {
   const getCollRef = async () => {
 
     try {
-      collResult.value = await firestore.collection(collection)
+      collResult.value =  firestore.collection(collection)
     }
     catch(err) {
       console.log(err.message)
