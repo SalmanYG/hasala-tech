@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar fixed-top navbar-light bg-light">
-    <div class="container-fluid">
+    <div class="container">
       <div class="logo"><h2>HasalaTech</h2></div>
       <form class="content">
         <label
@@ -54,7 +54,7 @@ console.log( displayName.value);
 
 <style scoped>
 .navbar {
-  padding: 10px 250px;
+  padding: 10px;
 }
 .btn {
   margin: 0 10px;

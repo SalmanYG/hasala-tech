@@ -3,7 +3,9 @@
       <div class="card-header">
           Spendings Per Category (Last 31 Days)
       </div>
-      <canvas ref='chart'></canvas>
+      <div class="card-body">
+          <canvas ref='chart'></canvas>
+      </div>
   </div>
 </template>
 

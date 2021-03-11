@@ -24,7 +24,7 @@
       </div>
       <div v-if="spendings" class="charts row">
         <div class="col-6">
-          <LineChart :spendings="spendings"/>
+          <LineChart :data="daySpendingData" :labels="daySpendingLabels"/>
         </div>
         <div class="col-6">
           <PieChart :data="categoryData"/>
@@ -133,7 +133,6 @@ export default {
 
               //logic for going through all spendings
               try {
-
                 getSpendings()
 
               } catch (e) {
@@ -150,7 +149,13 @@ export default {
     //event that handles when a wallet gets clicked
     const showWallet = (wallet) => {
       shownWallet.value = wallet;
-      getSpendings()
+      try {
+        getSpendings()
+      } catch (e) {
+        console.log(e.message)
+        spendingsTotal.value = 0
+        spendingsAvg.value = 0
+      }
     };
 
     const balanceModal = () => {
@@ -171,6 +176,10 @@ export default {
 
     const getSpendings = () => {
       console.log("I got executed")
+      //to reset the spendings array, we need to empty it
+      // spendings.value = []
+
+      //create necessary value to compute anything spendings related
       let spendArr = shownWallet.value.spendings
       let length = spendArr.length
       let monthAgo = new Date()
@@ -234,16 +243,20 @@ export default {
       let prevDate = ""
       let spendPerDay = []
       let spendDays = []
-      for (let i = 0; i < spendings.value.length; i++) {
-        const date = spendings.value[i].createdAt.toDate()
-        let currDate = date.getDate() + "/" + (date.getMonth() + 1)
-        console.log(currDate)
-        // if(prevDate === ""){
-        //   spendDays.push(currDate)
-        // } else {
-
-        // }
+      for (let i = spendings.value.length - 1; i >= 0; i--) {
+        const spend = spendings.value[i]
+        let currDate = spend.createdAt.toDate().getDate() + "/" + (spend.createdAt.toDate().getMonth() + 1)
+        if (currDate === prevDate) {
+            spendPerDay[spendPerDay.length - 1] += parseFloat(spend.amount)
+        }
+        else {
+          spendDays.push(currDate)
+          prevDate = currDate
+          spendPerDay.push(parseFloat(spend.amount))
+        }
       }
+      daySpendingData.value = spendPerDay
+      daySpendingLabels.value = spendDays
     }
 
     return {
@@ -258,7 +271,9 @@ export default {
       spendingsTotal,
       spendingsAvg,
       spendings,
-      categoryData
+      categoryData,
+      daySpendingData,
+      daySpendingLabels
     };
   },
 };

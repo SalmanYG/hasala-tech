@@ -3,35 +3,65 @@
       <div class="card-header">
           Spendings Per Day (Last 31 Days)
       </div>
-      <canvas ref='chart'></canvas>
+      <div class="card-body">
+          <canvas ref='chart'></canvas>
+      </div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
+import { onMounted, onUpdated, ref } from 'vue';
 export default {
-    props: ['spendings'],
+    props: ['labels', 'data'],
     setup(props) {
         const chart = ref(null)
-
-        onMounted(() => {
-            let chartjs = new Chart(chart.value, {
-                type: "line",
-                data: {
-                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                    datasets: [{
-                        label: 'Spendings',
-                        backgroundColor: '#01b0db',
-                        borderColor: '#025b7f',
-                        data: [0, 10, 5, 2, 20, 30, 45]
-                    }]
-                },
-                options: {
-                    legend: {
-                        display: false
+        let chartjs = undefined
+        let isFirst = true
+        
+        onUpdated(() => {
+            if(isFirst) {
+                chartjs = new Chart(chart.value, {
+                    type: "line",
+                    data: {
+                        labels: props.labels,
+                        datasets: [{
+                            label: 'Spendings',
+                            backgroundColor: '#01b0db',
+                            borderColor: '#025b7f',
+                            data: props.data
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        }
                     }
-                }
-            })
+                })
+                isFirst = false
+            } else {
+                chartjs.destroy()
+                chartjs = new Chart(chart.value, {
+                    type: "line",
+                    data: {
+                        labels: props.labels,
+                        datasets: [{
+                            label: 'Spendings',
+                            backgroundColor: '#01b0db',
+                            borderColor: '#025b7f',
+                            data: props.data
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        animation: {
+                            duration: 0
+                        }
+                    }
+                })
+            }
+            
         })
 
         return { chart }
@@ -43,4 +73,5 @@ export default {
 .chart {
     margin-bottom: 20px;
 }
+
 </style>

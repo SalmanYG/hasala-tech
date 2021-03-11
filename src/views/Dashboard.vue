@@ -122,7 +122,7 @@ export default {
   padding: 0;
 }
 .main {
-  padding: 0 250px;
+  padding: 0;
 }
 body {
   text-align: left;
