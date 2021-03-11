@@ -81,6 +81,8 @@ export default {
     const spendingsTotal = ref(0) //to display in the card
     const spendingsAvg = ref(0) ////to display in the card
     const categoryData = ref([])
+    const daySpendingData = ref([])
+    const daySpendingLabels = ref([])
 
     //for getting returned values from composables
     const { doc, getDoc } = getFromCollection("users"); //to get documents
@@ -175,17 +177,24 @@ export default {
       monthAgo.setDate(monthAgo.getDate() - 31)
       let count = 0
       let total = 0
+
+      //Moves spendings of the last 31 days to a spendings ref, then breaks from the loop
       for (let i = length - 1; i >= 0; i--) {
         let spendingDate = spendArr[i].createdAt.toDate()
         if ( spendingDate >= monthAgo ){
           spendings.value[count] = spendArr[i]
           total += parseInt(spendArr[i].amount)
           count++
+        } else {
+          break
         }
       }
+
+      //calculates total and average spendings to display as cards
       spendingsTotal.value = total
       spendingsAvg.value = (total/(count + 1)).toFixed(2)
       
+      //Handles PieChart data
       let data = [0, 0, 0, 0, 0, 0, 0, 0, 0]
       for (let i = 0; i < spendings.value.length; i++) {
           const el = spendings.value[i]
@@ -220,6 +229,21 @@ export default {
           }
       }
       categoryData.value = data
+
+      //Handles LineChart data
+      let prevDate = ""
+      let spendPerDay = []
+      let spendDays = []
+      for (let i = 0; i < spendings.value.length; i++) {
+        const date = spendings.value[i].createdAt.toDate()
+        let currDate = date.getDate() + "/" + (date.getMonth() + 1)
+        console.log(currDate)
+        // if(prevDate === ""){
+        //   spendDays.push(currDate)
+        // } else {
+
+        // }
+      }
     }
 
     return {
