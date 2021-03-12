@@ -24,10 +24,14 @@
               @keydown.enter.prevent=""
               v-model="email"
               type="email"
+              :disabled="isDefault"
             />
-            <small class="form-text text-muted"
-              >Press enter to add more users</small
-            >
+            <small v-if="isDefault" class="form-text text-muted">
+              You can't add more users to the default wallet
+            </small>
+            <small v-else class="form-text text-muted">
+              Press [Enter] to add more users
+            </small>
             <div v-for="email in emails" :key="email" class="pill">
               {{ email }}
             </div>
@@ -64,6 +68,7 @@ export default {
     onMounted(async () => {
       if(props.wallet.name === "Default") {
         isDefault.value = true
+        email.value = "---"
       }
       name.value = props.wallet.name
       amount.value = props.wallet.balance
@@ -72,7 +77,7 @@ export default {
       //we do that by taking the id written in the users array of the wallet
       //after that we query for its email in the users collection
       //when we get the email, we push this value to the emails ref array
-      
+
     })
 
     const saveWallet = async () => {
@@ -94,7 +99,7 @@ export default {
       context.emit("close");
     };
 
-    return { closeModal, saveWallet, deleteWallet, isDefault, name, amount, emails };
+    return { closeModal, saveWallet, deleteWallet, isDefault, name, amount, email, emails };
   },
 };
 </script>
