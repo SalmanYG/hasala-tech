@@ -10,7 +10,7 @@
         <form @submit.prevent="">
           <div class="form-group">
             <label>Name</label>
-            <input v-model="name" class="form-control" type="text" />
+            <input v-model="name" class="form-control" type="text" :disabled="isDefault"/>
           </div>
           <div class="form-group">
             <label>Balance (SR)</label>
@@ -35,7 +35,7 @@
           <button @click="saveWallet" class="btn btn-primary">
             Save changes
           </button>
-          <button @click="deleteWallet" id="delete" class="btn btn-danger">
+          <button @click="deleteWallet" id="delete" class="btn btn-danger" :disabled="isDefault">
             Delete wallet
           </button>
         </form>
@@ -47,19 +47,35 @@
 <script>
 import { auth } from "../firebase/config";
 import updateWallet from "../composables/updateWallet";
+import { onMounted, ref } from 'vue';
+import docRef from '../composables/docRef';
+
 export default {
   props: ["wallet"],
   setup(props, context) {
-    // const name = ref("")
-    // const amount = ref(0)
-    // const emails = ref([])
-    // const email = ref("")
+    const name = ref("")
+    const amount = ref(0)
+    const emails = ref([])
+    const email = ref("")
+    const isDefault = ref(false)
 
-    //logic for getting emails of all users available
+    const { getCollRef, collResult } = docRef("users");
 
-    //logic for adding another email to the list
+    onMounted(async () => {
+      if(props.wallet.name === "Default") {
+        isDefault.value = true
+      }
+      name.value = props.wallet.name
+      amount.value = props.wallet.balance
 
-    const saveWallet = () => {
+      //we need to get the emails of all current users in the wallet
+      //we do that by taking the id written in the users array of the wallet
+      //after that we query for its email in the users collection
+      //when we get the email, we push this value to the emails ref array
+      
+    })
+
+    const saveWallet = async () => {
       //logic for updating value of the wallet
     };
 
@@ -78,7 +94,7 @@ export default {
       context.emit("close");
     };
 
-    return { closeModal, saveWallet, deleteWallet };
+    return { closeModal, saveWallet, deleteWallet, isDefault, name, amount, emails };
   },
 };
 </script>
