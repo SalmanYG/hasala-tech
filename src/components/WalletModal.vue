@@ -1,5 +1,5 @@
 <template>
-  <div class="backdrop" @click.self="closeModal">
+  <div v-if="isLoaded" class="backdrop" @click.self="closeModal">
     <div class="card" style="width: 18rem;">
       <div class="card-body">
         <button @click="closeModal" type="button" class="close">
@@ -21,7 +21,7 @@
 
             <input
               class="form-control"
-              @keydown.enter.prevent=""
+              @keydown.enter.prevent="handleKeydown"
               v-model="email"
               type="email"
               :disabled="isDefault"
@@ -49,10 +49,11 @@
 </template>
 
 <script>
-import { auth } from "../firebase/config";
+import { auth, firestore } from "../firebase/config";
 import updateWallet from "../composables/updateWallet";
 import { onMounted, ref } from 'vue';
 import docRef from '../composables/docRef';
+import getFromCollection from '../composables/getFromCollection';
 
 export default {
   props: ["wallet"],
@@ -62,10 +63,22 @@ export default {
     const emails = ref([])
     const email = ref("")
     const isDefault = ref(false)
+    const isLoaded = ref(false)
 
-    const { getCollRef, collResult } = docRef("users");
+    const { getRef, result } = docRef("users");
+    // const { getDoc, doc } = getFromCollection("users")
+
+    const user = ref(auth.currentUser);
+    let uid = ref({})
 
     onMounted(async () => {
+      auth.onAuthStateChanged((newUser) => {
+        if (newUser) {
+          user.value = newUser;
+          uid.value = user.value.uid;
+        }
+      })
+
       if(props.wallet.name === "Default") {
         isDefault.value = true
         email.value = "---"
@@ -77,11 +90,30 @@ export default {
       //we do that by taking the id written in the users array of the wallet
       //after that we query for its email in the users collection
       //when we get the email, we push this value to the emails ref array
-
+      let users = await props.wallet.users
+      const index = users.indexOf(uid.value)
+      if (index > -1) { 
+        users.splice(index, 1) 
+      }
+      for (let uid of users) {
+        let doc = await firestore.collection("users").doc(uid).get()
+        emails.value.push(doc.data().email)
+      }
+      isLoaded.value = true
     })
+
+    const handleKeydown = () => {
+      if (!emails.value.includes(email.value)) {
+        email.value = email.value.replace(/\s/g, ""); // remove all whitespace
+        emails.value.push(email.value);
+      }
+      email.value = "";
+    }
+
 
     const saveWallet = async () => {
       //logic for updating value of the wallet
+      
     };
 
     const deleteWallet = async () => {
@@ -99,7 +131,7 @@ export default {
       context.emit("close");
     };
 
-    return { closeModal, saveWallet, deleteWallet, isDefault, name, amount, email, emails };
+    return { closeModal, saveWallet, deleteWallet, isDefault, isLoaded, name, amount, email, emails, handleKeydown };
   },
 };
 </script>
@@ -131,5 +163,15 @@ button {
   background: rgba(0, 0, 0, 0.5);
   width: 100%;
   height: 100%;
+}
+
+.pill {
+  display: inline-block;
+  margin: 10px 10px 0 0;
+  color: #444;
+  background: #ddd;
+  padding: 8px;
+  border-radius: 20px;
+  font-size: 14px;
 }
 </style>
