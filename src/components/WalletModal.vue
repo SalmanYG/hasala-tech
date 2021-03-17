@@ -1,6 +1,6 @@
 <template>
   <div v-if="isLoaded" class="backdrop" @click.self="closeModal">
-    <div class="card" style="width: 18rem;">
+    <div class="card" style="width: 30rem;">
       <div class="card-body">
         <button @click="closeModal" type="button" class="close">
           <span aria-hidden="true">&times;</span>
@@ -26,12 +26,14 @@
               type="email"
               :disabled="isDefault"
             />
-            <small v-if="isDefault" class="form-text text-muted">
-              You can't add more users to the default wallet
-            </small>
-            <small v-else class="form-text text-muted">
-              Press [Enter] to add more users
-            </small>
+            <div>
+              <small v-if="isDefault" class="form-text text-muted">
+                You can't add more users to the default wallet
+              </small>
+              <small v-else class="form-text text-muted">
+                Press [Enter] to add more users
+              </small>
+            </div>
             <div v-for="email in emails" :key="email" class="pill">
               {{ email }}
             </div>
@@ -61,12 +63,15 @@ export default {
     const name = ref("")
     const amount = ref(0)
     const emails = ref([])
+    const newEmails = ref([])
     const email = ref("")
+    const users = ref([])
+    const removedEmails = ref([])
     const isDefault = ref(false)
     const isLoaded = ref(false)
 
     const { getRef, result } = docRef("users");
-    // const { getDoc, doc } = getFromCollection("users")
+    const { getCollRef, collResult } = docRef("users");
 
     const user = ref(auth.currentUser);
     let uid = ref({})
@@ -105,7 +110,8 @@ export default {
     const handleKeydown = () => {
       if (!emails.value.includes(email.value)) {
         email.value = email.value.replace(/\s/g, ""); // remove all whitespace
-        emails.value.push(email.value);
+        emails.value.push(email.value)
+        newEmails.value.push(email.value) //adds the newly added email to different array to get ids later
       }
       email.value = "";
     }
@@ -113,7 +119,36 @@ export default {
 
     const saveWallet = async () => {
       //logic for updating value of the wallet
+      const { editWallet } = updateWallet(props.wallet.id)
       
+      //get all the uids of the newly added users in the newEmails array
+      try {
+        await getCollRef();
+        for await (let email of newEmails.value) {
+          let query = await collResult.value.where("email", "==", email).get();
+          try {
+            //lazy way to access the single document (it's the official way :\)
+            console.log("The user id for $(email) is: ", query.docs[0].id)
+            users.value.push(query.docs[0].id);
+          } catch (error) {
+            console.log(error.message);
+          }
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+
+      //create the data object
+      const walletData = {
+        name: name.value,
+        balance: amount.value,
+        users: users.value
+      }
+      
+      console.log("The wallet data is: ", walletData)
+
+      await editWallet(walletData)
+      closeModal()
     };
 
     const deleteWallet = async () => {
@@ -153,7 +188,7 @@ button {
 }
 .card {
   margin: auto;
-  width: 50%;
+  width: 70%;
   top: 30%;
 }
 

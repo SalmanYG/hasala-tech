@@ -42,6 +42,27 @@ const updateWallet = (wid) => {
     });
   };
 
+  const editWallet = async (data) => {
+    const walletRef = firestore.collection("wallets").doc(wid)
+
+    walletRef.update({
+      name: data.name,
+      balance: data.balance
+    })
+
+    for await (uid of data.users) {
+      const userRef = firestore.collection("users").doc(uid)
+
+      walletRef.update({
+        users: arrUnion(uid)
+      })
+
+      userRef.update({
+        wallets: arrUnion(wid)
+      })
+    }
+  }
+
   const deleteWallet = async () => {
     const userRef = firestore.collection("users").doc(uid.value);
 
@@ -49,11 +70,14 @@ const updateWallet = (wid) => {
       wallets: firebase.firestore.FieldValue.arrayRemove(wid),
     });
 
-     const walletRef = firestore.collection("wallets").doc(wid);
+    //query for users with the same wallet and delete it from their wallets array
+
+    //delete wallet document
+    const walletRef = firestore.collection("wallets").doc(wid);
     walletRef.delete(); 
   };
 
-  return { updateBalance, updateSpendings, deleteWallet };
+  return { updateBalance, updateSpendings, editWallet, deleteWallet };
 };
 
 export default updateWallet;
