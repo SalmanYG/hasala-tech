@@ -65,7 +65,7 @@
   <!-- Wallets Modal -->
   <div v-else-if="title === 'wallet'">
     <div class="backdrop" @click.self="closeModal">
-      <div class="card" style="width: 18rem;">
+      <div class="card" style="width: 26rem;">
         <div class="card-body">
           <button @click="closeModal" type="button" class="close">
             <span aria-hidden="true">&times;</span>
@@ -90,13 +90,17 @@
                 v-model="email"
                 type="email"
               />
-              <small class="form-text text-muted"
-                >Press 'Enter' to add user</small
-              >
+              <div>
+                <small class="form-text text-muted">
+                  Press 'Enter' to add user
+                </small>
+              </div>
               <div v-for="email in emails" :key="email" class="pill">
                 {{ email }}
               </div>
-              <button class="btn btn-primary">Add wallet</button>
+              <div>
+                <button class="btn btn-primary">Add wallet</button>
+              </div>
             </div>
           </form>
           <div v-if="error">

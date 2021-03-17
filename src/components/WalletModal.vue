@@ -1,6 +1,6 @@
 <template>
   <div v-if="isLoaded" class="backdrop" @click.self="closeModal">
-    <div class="card" style="width: 30rem;">
+    <div class="card" style="width: 26rem;">
       <div class="card-body">
         <button @click="closeModal" type="button" class="close">
           <span aria-hidden="true">&times;</span>
