@@ -10,75 +10,72 @@
 </template>
 
 <script>
-import { onBeforeMount, onBeforeUpdate, onMounted, onUpdated, ref } from 'vue';
+import { onBeforeMount, onBeforeUpdate, onMounted, onUpdated, ref, watch } from 'vue';
 export default {
     props: ['data'],
     setup(props) {
         const chart = ref(null)
-        const datta = ref([])
+        const emptyData = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         let chartjs = undefined
-        let isFirst = true
         //I need to modify this to make it 'update' the chart, not create a new one above it.
-        onUpdated(() => {
-            if(isFirst) {
-                chartjs = new Chart(chart.value, {
-                    type: "pie",
-                    data: {
-                        labels: ['Housing', 'Transportation', 'Food', 'Utilities', 'Healthcare', 'Personal', 'Bills', 'Entertainment', 'Emergency'],
-                        datasets: [{
-                            data: props.data,
-                            backgroundColor: [
-                                '#004c6d',
-                                '#025b7f',
-                                '#036b91',
-                                '#047ca4',
-                                '#048db6',
-                                '#039ec8',
-                                '#01b0db',
-                                '#00c2ed',
-                                '#00d4ff'
-                            ]
-                        }]
-                    },
-                    options: {
-                        legend: {
-                            display: false
-                        }
+
+        onMounted(() => {
+            chartjs = new Chart(chart.value, {
+                type: "pie",
+                data: {
+                    labels: ['Housing', 'Transportation', 'Food', 'Utilities', 'Healthcare', 'Personal', 'Bills', 'Entertainment', 'Emergency'],
+                    datasets: [{
+                        data: props.data,
+                        backgroundColor: [
+                            '#004c6d',
+                            '#025b7f',
+                            '#036b91',
+                            '#047ca4',
+                            '#048db6',
+                            '#039ec8',
+                            '#01b0db',
+                            '#00c2ed',
+                            '#00d4ff'
+                        ]
+                    }]
+                },
+                options: {
+                    legend: {
+                        display: false
                     }
-                })
-                isFirst = false
-            } else {
-                chartjs.destroy()
-                chartjs = new Chart(chart.value, {
-                    type: "pie",
-                    data: {
-                        labels: ['Housing', 'Transportation', 'Food', 'Utilities', 'Healthcare', 'Personal', 'Bills', 'Entertainment', 'Emergency'],
-                        datasets: [{
-                            data: props.data,
-                            backgroundColor: [
-                                '#004c6d',
-                                '#025b7f',
-                                '#036b91',
-                                '#047ca4',
-                                '#048db6',
-                                '#039ec8',
-                                '#01b0db',
-                                '#00c2ed',
-                                '#00d4ff'
-                            ]
-                        }]
-                    },
-                    options: {
-                        legend: {
-                            display: false
-                        },
-                        animation: {
-                            duration: 0
-                        }
+                }
+            })
+        })
+
+        //we can use 'watch' to detect when a variable (or in this case, a prop) is changed
+        //it's useful since onUpdated doesn't always detect when a prop is changed exactly
+        watch(() => props.data, () => {
+            chartjs.destroy()
+            chartjs = new Chart(chart.value, {
+                type: "pie",
+                data: {
+                    labels: ['Housing', 'Transportation', 'Food', 'Utilities', 'Healthcare', 'Personal', 'Bills', 'Entertainment', 'Emergency'],
+                    datasets: [{
+                        data: props.data,
+                        backgroundColor: [
+                            '#004c6d',
+                            '#025b7f',
+                            '#036b91',
+                            '#047ca4',
+                            '#048db6',
+                            '#039ec8',
+                            '#01b0db',
+                            '#00c2ed',
+                            '#00d4ff'
+                        ]
+                    }]
+                },
+                options: {
+                    legend: {
+                        display: false
                     }
-                })
-            }
-            
+                }
+            })
         })
         return { chart }
     }

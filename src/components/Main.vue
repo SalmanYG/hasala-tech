@@ -133,7 +133,7 @@ export default {
 
               //logic for going through all spendings
               try {
-                getSpendings()
+                getSpendings(shownWallet.value)
 
               } catch (e) {
                 //set them all to zero
@@ -150,7 +150,7 @@ export default {
     const showWallet = (wallet) => {
       shownWallet.value = wallet;
       try {
-        getSpendings()
+        getSpendings(wallet)
       } catch (e) {
         console.log(e.message)
         spendingsTotal.value = 0
@@ -174,89 +174,101 @@ export default {
       context.emit("edit", wallet);
     };
 
-    const getSpendings = () => {
+    const getSpendings = (wallet) => {
       console.log("I got executed")
       //to reset the spendings array, we need to empty it
       // spendings.value = []
 
       //create necessary value to compute anything spendings related
-      let spendArr = shownWallet.value.spendings
-      let length = spendArr.length
-      let monthAgo = new Date()
-      monthAgo.setDate(monthAgo.getDate() - 31)
-      let count = 0
-      let total = 0
+      if(wallet.spendings != undefined) {
+        let spendArr = wallet.spendings
+        let length = spendArr.length
+        let monthAgo = new Date()
+        monthAgo.setDate(monthAgo.getDate() - 31)
+        let count = 0
+        let total = 0
 
-      //Moves spendings of the last 31 days to a spendings ref, then breaks from the loop
-      for (let i = length - 1; i >= 0; i--) {
-        let spendingDate = spendArr[i].createdAt.toDate()
-        if ( spendingDate >= monthAgo ){
-          spendings.value[count] = spendArr[i]
-          total += parseInt(spendArr[i].amount)
-          count++
-        } else {
-          break
-        }
-      }
-
-      //calculates total and average spendings to display as cards
-      spendingsTotal.value = total
-      spendingsAvg.value = (total/(count + 1)).toFixed(2)
-      
-      //Handles PieChart data
-      let data = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-      for (let i = 0; i < spendings.value.length; i++) {
-          const el = spendings.value[i]
-          switch (el.category) {
-              case "Housing":
-                  data[0] += parseFloat(el.amount)
-                  break;
-              case "Transportation":
-                  data[1] += parseFloat(el.amount)
-                  break;
-              case "Food":
-                  data[2] += parseFloat(el.amount)
-                  break;
-              case "Utilities":
-                  data[3] += parseFloat(el.amount)
-                  break;
-              case "Healthcare":
-                  data[4] += parseFloat(el.amount)
-                  break;
-              case "Personal":
-                  data[5] += parseFloat(el.amount)
-                  break;
-              case "Bills":
-                  data[6] += parseFloat(el.amount)
-                  break;
-              case "Entertainment":
-                  data[7] += parseFloat(el.amount)
-                  break;
-              default:
-                  data[8] += parseFloat(el.amount)
-                  break;
+        //Moves spendings of the last 31 days to a spendings ref, then breaks from the loop
+        for (let i = length - 1; i >= 0; i--) {
+          let spendingDate = spendArr[i].createdAt.toDate()
+          if ( spendingDate >= monthAgo ){
+            spendings.value[count] = spendArr[i]
+            total += parseInt(spendArr[i].amount)
+            count++
+          } else {
+            break
           }
-      }
-      categoryData.value = data
+        }
 
-      //Handles LineChart data
-      let prevDate = ""
-      let spendPerDay = []
-      let spendDays = []
-      for (let i = spendings.value.length - 1; i >= 0; i--) {
-        const spend = spendings.value[i]
-        let currDate = spend.createdAt.toDate().getDate() + "/" + (spend.createdAt.toDate().getMonth() + 1)
-        if (currDate === prevDate) {
-            spendPerDay[spendPerDay.length - 1] += parseFloat(spend.amount)
+        //calculates total and average spendings to display as cards
+        spendingsTotal.value = total
+        spendingsAvg.value = (total/(count + 1)).toFixed(2)
+        
+        //Handles PieChart data
+        let data = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        for (let i = 0; i < spendings.value.length; i++) {
+            const el = spendings.value[i]
+            switch (el.category) {
+                case "Housing":
+                    data[0] += parseFloat(el.amount)
+                    break;
+                case "Transportation":
+                    data[1] += parseFloat(el.amount)
+                    break;
+                case "Food":
+                    data[2] += parseFloat(el.amount)
+                    break;
+                case "Utilities":
+                    data[3] += parseFloat(el.amount)
+                    break;
+                case "Healthcare":
+                    data[4] += parseFloat(el.amount)
+                    break;
+                case "Personal":
+                    data[5] += parseFloat(el.amount)
+                    break;
+                case "Bills":
+                    data[6] += parseFloat(el.amount)
+                    break;
+                case "Entertainment":
+                    data[7] += parseFloat(el.amount)
+                    break;
+                default:
+                    data[8] += parseFloat(el.amount)
+                    break;
+            }
         }
-        else {
-          spendDays.push(currDate)
-          prevDate = currDate
-          spendPerDay.push(parseFloat(spend.amount))
+        categoryData.value = data
+
+        //Handles LineChart data
+        let prevDate = ""
+        let spendPerDay = []
+        let spendDays = []
+        for (let i = spendings.value.length - 1; i >= 0; i--) {
+          const spend = spendings.value[i]
+          let currDate = spend.createdAt.toDate().getDate() + "/" + (spend.createdAt.toDate().getMonth() + 1)
+          if (currDate === prevDate) {
+              spendPerDay[spendPerDay.length - 1] += parseFloat(spend.amount)
+          }
+          else {
+            spendDays.push(currDate)
+            prevDate = currDate
+            spendPerDay.push(parseFloat(spend.amount))
+          }
         }
+        console.log("This is spendperday", spendPerDay)
+        console.log("This is spenddays", spendDays)
+        daySpendingData.value = spendPerDay
+        daySpendingLabels.value = spendDays
       }
-      daySpendingData.value = spendPerDay
-      daySpendingLabels.value = spendDays
+      else {
+        //set all values to zero
+        spendingsTotal.value = 0
+        spendingsAvg.value = 0
+        categoryData.value.length = 0
+        daySpendingData.value.length = 0
+        daySpendingLabels.value.length = 0
+      }
     }
 
     return {
