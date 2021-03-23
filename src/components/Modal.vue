@@ -9,7 +9,7 @@
   <!-- Balance Modal -->
   <div v-if="title === 'balance' && wallet">
     <div class="backdrop" @click.self="closeModal">
-      <div class="card" style="width: 18rem;">
+      <div class="card" style="width: 20rem;">
         <div class="card-body">
           <button @click="closeModal" type="button" class="close">
             <span aria-hidden="true">&times;</span>
@@ -20,6 +20,7 @@
             <div class="form-group">
               <label>Amount (SR)</label>
               <input v-model="amount" class="form-control" type="number"/>
+              <div v-if="warning" class="alert alert-danger">{{alert}}</div>
             </div>
             <button class="btn btn-primary">Add balance</button>
           </form>
@@ -30,7 +31,7 @@
   <!-- Spendings Modal -->
   <div v-else-if="title === 'spendings' && wallet">
     <div class="backdrop" @click.self="closeModal">
-      <div class="card" style="width: 18rem;">
+      <div class="card" style="width: 20rem;">
         <div class="card-body">
           <button @click="closeModal" type="button" class="close">
             <span aria-hidden="true">&times;</span>
@@ -41,6 +42,7 @@
             <div class="form-group">
               <label>Amount (SR)</label>
               <input v-model="amount" class="form-control" type="number" />
+              <div v-if="warning" class="alert alert-danger">{{alert}}</div>
               <label>Category</label>
               <select required name="category" id="category" class="form-select" v-model="category">
                 <option selected value="">Select a category</option>
@@ -132,6 +134,8 @@ export default {
     const name = ref("");
     const amount = ref(0);
     const category = ref("")
+    const warning = ref(false)
+    const alert = ref("")
 
     // to get user before loading page
     const user = ref(auth.currentUser);
@@ -221,17 +225,36 @@ export default {
     };
 
     const addBalance = async () => {
-      const { updateBalance } = updateWallet(props.wallet.id);
-      await updateBalance(amount.value);
-      closeModal()
+      if(amount.value > 0) {
+        const { updateBalance } = updateWallet(props.wallet.id);
+        await updateBalance(amount.value);
+        closeModal()
+      }
+      else {
+        alert.value = "Please enter a value greater than 0"
+        warning.value = true
+      }
     };
 
     const addSpending = async () => {
-      const { updateSpendings, updateBalance } = updateWallet(props.wallet.id);
-      await updateSpendings(amount.value, category.value)
-      //decrement the balance by the amount spent
-      await updateBalance(-amount.value);
-      closeModal()
+      if(amount.value > 0) {
+        if(props.wallet.balance - amount.value > 0) {
+          const { updateSpendings, updateBalance } = updateWallet(props.wallet.id);
+          await updateSpendings(amount.value, category.value)
+          //decrement the balance by the amount spent
+          await updateBalance(-amount.value);
+          closeModal()
+        }
+        else {
+          alert.value = "Please enter a value within your balance"
+          warning.value = true
+        }
+      }
+      else {
+        alert.value = "Please enter a value greater than 0"
+        warning.value = true
+      }
+      
     };
 
     return {
@@ -246,7 +269,9 @@ export default {
       addWallet,
       walletSuccess,
       error,
-      category
+      category,
+      warning,
+      alert
     };
   },
 };
@@ -295,11 +320,15 @@ button {
 
 @media (max-width: 768px) {
     .add {
-      width: 18rem;
+      width: 20rem;
     }
 }
 
 .modal-alert {
   margin-top: 3%;
+}
+
+.alert {
+  margin: 5px 0;
 }
 </style>
