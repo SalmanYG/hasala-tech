@@ -11,6 +11,8 @@
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "firebase": "^8.2.7",
+    "is-svg": "^4.3.1",
+    "ssri": "^8.0.1",
     "vue": "^3.0.0",
     "vue-js-modal": "^2.0.0-rc.6",
     "vue-router": "^4.0.0-0"
