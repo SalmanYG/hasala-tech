@@ -64,6 +64,13 @@ export default {
   border-left: 4px solid #047ca4;
   margin: 25px 0;
 }
+
+@media (max-width: 768px) {
+    .card {
+      margin: 5px 0;
+    }
+}
+
 .card-body {
   text-align: left;
   width: 100%;

@@ -2,7 +2,7 @@
   <div v-if="doc">
     <div class="container">
       <div class="cards row">
-        <div class="col">
+        <div class="col-md-4 col-sm-12">
           <Card
             @balanceModal="balanceModal"
             title="Balance"
@@ -10,7 +10,7 @@
             :button="true"
           />
         </div>
-        <div class="col">
+        <div class="col-md-4 col-sm-12">
           <Card
             @spendingsModal="spendingsModal"
             title="Spendings"
@@ -18,15 +18,15 @@
             :button="true"
           />
         </div>
-        <div class="col">
+        <div class="col-md-4 col-sm-12">
           <Card title="Average Spendings" :content="spendingsAvg" :button="false" />
         </div>
       </div>
       <div v-if="spendings" class="charts row">
-        <div class="col-6">
+        <div class="col-md-6 col-sm-12">
           <LineChart :data="daySpendingData" :labels="daySpendingLabels"/>
         </div>
-        <div class="col-6">
+        <div class="col-md-6 col-sm-12">
           <PieChart :data="categoryData"/>
         </div>
       </div>
@@ -294,5 +294,16 @@ export default {
 <style scoped>
 body {
   text-align: left;
+}
+
+@media (max-width: 768px) {
+    .cards {
+      margin-top: 65px;
+      margin-bottom: 10px;
+    }
+
+    .wallets {
+      margin-bottom: 20px;
+    }
 }
 </style>

@@ -65,7 +65,7 @@
   <!-- Wallets Modal -->
   <div v-else-if="title === 'wallet'">
     <div class="backdrop" @click.self="closeModal">
-      <div class="card" style="width: 26rem;">
+      <div class="card add">
         <div class="card-body">
           <button @click="closeModal" type="button" class="close">
             <span aria-hidden="true">&times;</span>
@@ -289,7 +289,14 @@ button {
   font-size: 14px;
 }
 
-.alert {
+.add {
+  width: 26rem;
+}
+
+@media (max-width: 768px) {
+    .add {
+      width: 18rem;
+    }
 }
 
 .modal-alert {
