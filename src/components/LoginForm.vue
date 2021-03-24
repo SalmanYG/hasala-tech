@@ -40,7 +40,10 @@
                         style="margin-top: 3%;"
                         class="alert alert-danger"
                         role="alert"
-                      >{{ error }}</div>
+                      >Incorrect email or password. Please Try again.</div>
+                    </div>
+                    <div v-else-if="signupSuccess" class="alert alert-success">
+                      You have successfully created your account. Please log in to access you account.
                     </div>
                   </form>
                 </div>
@@ -54,14 +57,19 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import useLogin from "../composables/login";
 
 export default {
+  props: ['signupSuccess'],
   setup(props, context) {
     const { error, login } = useLogin();
     const email = ref("");
     const password = ref("");
+
+    onMounted(() => {
+      error.value = false
+    })
 
     const handleSubmit = async () => {
       await login(email.value, password.value);
@@ -79,5 +87,9 @@ export default {
 <style scoped>
 button{
   margin-top: 3%;
+}
+
+.alert {
+  margin: 3% 0 0;
 }
 </style>

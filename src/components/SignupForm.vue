@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import useSignup from "../composables/signup";
 
 export default {
@@ -81,6 +81,9 @@ export default {
     const { error, signup } = useSignup();
     console.log(error);
 
+    onMounted(() => {
+      error.value = false
+    })
     const displayName = ref("");
     const email = ref("");
     const password = ref("");
@@ -90,7 +93,7 @@ export default {
       await signup(email.value, password.value, displayName.value);
       submitted.value = true;
       if (!error.value) {
-        context.emit("sucessfulSignup");
+        context.emit("sucessfulSignup", submitted.value);
       }
     };
     return { submitted, error, displayName, email, password, handleSubmit };

@@ -2,15 +2,15 @@
 
   <div v-if="registered">
    
-    <LoginForm @login="redirectToDashboard" />
+    <LoginForm @login="redirectToDashboard" :signupSuccess="signedUp"/>
      
-    <a class="nav-link" @click="registered = false" >Create an Account!</a>
+    <a class="nav-link" @click="resetValues" >Create an Account!</a>
   </div>
 
   <div v-else>
    
     <SignupForm @sucessfulSignup="redirectToLogin" />
-        <a class="nav-link" @click="registered = true" >Login</a>
+        <a class="nav-link" @click="resetValues" >Login</a>
   </div>
 
 </template>
@@ -28,16 +28,23 @@ export default {
   setup() {
     const router = useRouter();
     const registered = ref(true);
+    const signedUp = ref(false)
 
     const redirectToDashboard = () => {
       router.push({ name: "Dashboard"});
     };
 
-    const redirectToLogin = () => {
+    const redirectToLogin = (val) => {
       registered.value = true;
+      signedUp.value = val
     };
 
-    return { redirectToLogin, registered, redirectToDashboard };
+    const resetValues = () => {
+      registered.value = !registered.value
+      signedUp.value = false
+    }
+
+    return { redirectToLogin, registered, redirectToDashboard, signedUp, resetValues };
   },
 };
 </script>
