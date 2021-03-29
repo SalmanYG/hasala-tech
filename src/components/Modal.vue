@@ -238,7 +238,7 @@ export default {
 
     const addSpending = async () => {
       if(amount.value > 0) {
-        if(props.wallet.balance - amount.value > 0) {
+        if(props.wallet.balance - amount.value >= 0) {
           const { updateSpendings, updateBalance } = updateWallet(props.wallet.id);
           await updateSpendings(amount.value, category.value)
           //decrement the balance by the amount spent

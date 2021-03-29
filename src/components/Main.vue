@@ -22,12 +22,19 @@
           <Card title="Average Spendings" :content="spendingsAvg" :button="false" />
         </div>
       </div>
-      <div v-if="spendings" class="charts row">
+      <div v-if="spendings.length" class="charts row">
         <div class="col-md-6 col-sm-12">
           <LineChart :data="daySpendingData" :labels="daySpendingLabels"/>
         </div>
         <div class="col-md-6 col-sm-12">
           <PieChart :data="categoryData"/>
+        </div>
+      </div>
+      <div v-else class="row">
+        <div class="col-sm-12">
+          <div class="alert alert-warning">
+            Data will be shown when this wallet have some spendings.
+          </div>
         </div>
       </div>
       <div class="wallets row">
@@ -149,13 +156,7 @@ export default {
     //event that handles when a wallet gets clicked
     const showWallet = (wallet) => {
       shownWallet.value = wallet;
-      try {
-        getSpendings(wallet)
-      } catch (e) {
-        console.log(e.message)
-        spendingsTotal.value = 0
-        spendingsAvg.value = 0
-      }
+      getSpendings(wallet)
     };
 
     const balanceModal = () => {
@@ -174,39 +175,61 @@ export default {
       context.emit("edit", wallet);
     };
 
-    const getSpendings = (wallet) => {
-      console.log("I got executed")
-      //to reset the spendings array, we need to empty it
-      // spendings.value = []
+    const getSpendings = async (wallet) => {
+      console.log("I got executed in", await wallet.name)
+      console.log("this is the wallet current spendings", await wallet.spendings)
 
-      //create necessary value to compute anything spendings related
-      if(wallet.spendings != undefined) {
-        let spendArr = wallet.spendings
-        let length = spendArr.length
-        let monthAgo = new Date()
-        monthAgo.setDate(monthAgo.getDate() - 31)
-        let count = 0
-        let total = 0
+      try {
+        if(await wallet.spendings) {
+          console.log('The wallet ', await wallet.name, 'have spendings')
 
-        //Moves spendings of the last 31 days to a spendings ref, then breaks from the loop
-        for (let i = length - 1; i >= 0; i--) {
-          let spendingDate = spendArr[i].createdAt.toDate()
-          if ( spendingDate >= monthAgo ){
-            spendings.value[count] = spendArr[i]
-            total += parseInt(spendArr[i].amount)
-            count++
-          } else {
-            break
+          spendings.value.length = 0
+          let spendArr = await wallet.spendings.reverse()
+          let monthAgo = new Date()
+              monthAgo.setDate(monthAgo.getDate() - 31)
+          let count = 0
+          let total = 0
+
+          //The array is being traversed in reverse to capture the latest spendings only
+          for (let i = spendArr.length - 1; i >= 0; i--) {
+            let spend = spendArr[i]
+            let spendDate = await spend.createdAt.toDate()
+            if (await spendDate >= monthAgo) {
+              spendings.value[count] = await spend
+              total += parseFloat(await spend.amount)
+              count++
+            } else {
+              break
+            }
           }
-        }
 
-        //calculates total and average spendings to display as cards
-        spendingsTotal.value = total
-        spendingsAvg.value = (total/(count + 1)).toFixed(2)
-        
-        //Handles PieChart data
-        let data = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-        for (let i = 0; i < spendings.value.length; i++) {
+          // console.log("This wallet's spendings are: ", spendings.value)
+
+          ////////////////////////////////////////////////////////
+          ///////////spendings reversed successfully//////////////
+          ////////////////////////////////////////////////////////
+
+
+
+          if(count > 0) {
+            spendingsTotal.value = total.toFixed(2)
+            spendingsAvg.value = (total/count).toFixed(2)
+
+            // console.log("Total spendings is ", spendingsTotal.value)
+            // console.log("Average spendings is ", spendingsAvg.value)
+          } else {
+            spendingsTotal.value = 0
+            spendingsAvg.value = 0
+          }
+
+          ////////////////////////////////////////////////////////
+          /////////Total and Avg calculated successfully//////////
+          ////////////////////////////////////////////////////////
+
+
+
+          let data = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+          for (let i = 0; i < spendings.value.length; i++) {
             const el = spendings.value[i]
             switch (el.category) {
                 case "Housing":
@@ -237,37 +260,53 @@ export default {
                     data[8] += parseFloat(el.amount)
                     break;
             }
-        }
-        categoryData.value = data
+          }
+          categoryData.value = data
 
-        //Handles LineChart data
-        let prevDate = ""
-        let spendPerDay = []
-        let spendDays = []
-        for (let i = spendings.value.length - 1; i >= 0; i--) {
-          const spend = spendings.value[i]
-          let currDate = spend.createdAt.toDate().getDate() + "/" + (spend.createdAt.toDate().getMonth() + 1)
-          if (currDate === prevDate) {
-              spendPerDay[spendPerDay.length - 1] += parseFloat(spend.amount)
+          // console.log("pie chart data is", categoryData.value)
+
+          ////////////////////////////////////////////////////////
+          ////////Pie Chart Data calculated successfully//////////
+          ////////////////////////////////////////////////////////
+
+          let prevDate = ""
+          let spendPerDay = []
+          let spendDays = []
+          for (let i =  0; i < spendings.value.length; i++) {
+            const spend = spendings.value[i]
+            let currDate = spend.createdAt.toDate().getDate() + "/" + (spend.createdAt.toDate().getMonth() + 1)
+            if (currDate === prevDate) {
+                spendPerDay[spendPerDay.length - 1] += parseFloat(spend.amount)
+            }
+            else {
+              spendDays.push(currDate)
+              prevDate = currDate
+              spendPerDay.push(parseFloat(spend.amount))
+            }
           }
-          else {
-            spendDays.push(currDate)
-            prevDate = currDate
-            spendPerDay.push(parseFloat(spend.amount))
-          }
+
+          console.log("The days where spendings were made are", spendDays)
+          console.log("The amount of spendings made per day are", spendPerDay)
+
+          daySpendingLabels.value = spendDays
+          daySpendingData.value = spendPerDay
+          
+          ////////////////////////////////////////////////////////
+          ////////Line Chart Data calculated successfully/////////
+          ////////////////////////////////////////////////////////
+
+        } else {
+          console.log('The wallet ', await wallet.name, 'doesn\'t have spendings')
+          spendings.value.length = 0
+          spendingsTotal.value = (0).toFixed(2)
+          spendingsAvg.value = (0).toFixed(2)
+          daySpendingLabels.value.length = 0
+          daySpendingLabels.value.length = 0
+          categoryData.length = 0
         }
-        console.log("This is spendperday", spendPerDay)
-        console.log("This is spenddays", spendDays)
-        daySpendingData.value = spendPerDay
-        daySpendingLabels.value = spendDays
-      }
-      else {
-        //set all values to zero
-        spendingsTotal.value = 0
-        spendingsAvg.value = 0
-        categoryData.value.length = 0
-        daySpendingData.value.length = 0
-        daySpendingLabels.value.length = 0
+      } 
+      catch (e) {
+        console.log(e.message, "The error is in line:", e.lineNumber)
       }
     }
 
