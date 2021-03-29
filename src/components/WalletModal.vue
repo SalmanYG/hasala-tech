@@ -173,10 +173,8 @@ export default {
 
 <style scoped>
 button {
-  margin-top: 5%;
-}
-#delete {
-  margin-left: 2%;
+  margin-top: 3%;
+  width: 100%;
 }
 .close {
   margin-top: 0%;

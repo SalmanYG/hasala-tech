@@ -87,6 +87,7 @@ export default {
 <style scoped>
 button{
   margin-top: 3%;
+  width: 100%;
 }
 
 .alert {

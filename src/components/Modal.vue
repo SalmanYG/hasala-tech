@@ -280,6 +280,7 @@ export default {
 <style scoped>
 button {
   margin-top: 5%;
+  width: 100%;
 }
 .close {
   margin-top: 0%;
