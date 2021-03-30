@@ -18,8 +18,9 @@
 <script>
 import SignupForm from "../components/SignupForm";
 import LoginForm from "../components/LoginForm";
-import { ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
+
 export default {
   components: {
     SignupForm,
@@ -29,6 +30,10 @@ export default {
     const router = useRouter();
     const registered = ref(true);
     const signedUp = ref(false)
+
+    onMounted(() => {
+      document.title = "Login"
+    })
 
     const redirectToDashboard = () => {
       router.push({ name: "Dashboard"});
@@ -42,6 +47,12 @@ export default {
     const resetValues = () => {
       registered.value = !registered.value
       signedUp.value = false
+      if(registered.value) {
+        document.title = "Login"
+      }
+      else {
+        document.title = "Signup"
+      }
     }
 
     return { redirectToLogin, registered, redirectToDashboard, signedUp, resetValues };

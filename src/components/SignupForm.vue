@@ -6,7 +6,7 @@
           <div class="card-body p-0">
             <div class="row">
               <div class="col-lg-6 d-none d-lg-flex">
-                <div class="flex-grow-1 bg-login-image" style="background: #4e73df;"></div>
+                <div class="flex-grow-1 bg-login-image"></div>
               </div>
               <div class="col-lg-6">
                 <div class="p-5">
@@ -105,5 +105,10 @@ export default {
 button{
   margin-top: 3%;
   width: 100%;
+}
+
+.bg-login-image {
+  background-image: url("../assets/riyadh.jpg");
+  background-size: 100% 400px;
 }
 </style>

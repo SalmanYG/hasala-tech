@@ -42,7 +42,8 @@ export default {
                 options: {
                     legend: {
                         display: false
-                    }
+                    },
+                    maintainAspectRatio: false
                 }
             })
         })
@@ -73,7 +74,11 @@ export default {
                 options: {
                     legend: {
                         display: false
-                    }
+                    },
+                    animation: {
+                        duration: 0
+                    },
+                    maintainAspectRatio: false
                 }
             })
         })
@@ -85,5 +90,11 @@ export default {
 <style scoped>
 .chart {
     margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+    .card-body {
+        height: 15rem;
+    }
 }
 </style>

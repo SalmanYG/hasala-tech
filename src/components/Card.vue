@@ -82,7 +82,14 @@ export default {
   margin: 15px 50% 0;
 }
 .btn {
-  border-color: #047ca4
+  border-color: #047ca4;
+  position: relative;
+  bottom: 3px;
+  left: 15px;
+}
+.bi {
+  position: relative;
+  bottom: 2px;
 }
 .inline * {
   display: inline-block;

@@ -1,5 +1,5 @@
 <template>
-  <div @click="showWallet" class="list-group-item ">
+  <div @click="showWallet" class="list-group-item">
     <div class="wallet-data">
       <h4>{{ wallet.name }}</h4>
       <p>{{ wallet.balance }}SR</p>
@@ -29,6 +29,11 @@ export default {
 .list-group-item {
   display: flex;
   justify-content: space-between;
+}
+
+.list-group-item:hover {
+  color: #004c6d;
+  background-color: #cacaca23;
 }
 button {
   margin-bottom: 10px;

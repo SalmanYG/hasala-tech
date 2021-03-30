@@ -32,10 +32,10 @@ export default {
         if (newUser) {
           user.value = newUser;
           displayName.value = user.value.displayName;
+          document.title = displayName.value + "'s Dashboard"
         }
       });
     });
-console.log( displayName.value);
 
     const { error, signOut } = useSignOut();
 
