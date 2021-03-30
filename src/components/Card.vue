@@ -61,8 +61,8 @@ export default {
 
 <style scoped>
 .card {
-  border-left: 4px solid #047ca4;
-  margin: 25px 0;
+  border-left: 4px solid #048db6;
+  margin: 25px 0 20px;
 }
 
 @media (max-width: 768px) {

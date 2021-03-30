@@ -11,8 +11,8 @@
                 <span class="material-icons">expand_less</span>
             </div>
             <div>
-                <button @click.stop="addWalletModal" class="btn" type="button">
-                    <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#047ca4" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                <button @click.stop="addWalletModal" class="btn btn-outline-light" type="button">
+                    <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
                     </svg>            
                 </button>
@@ -75,15 +75,23 @@ button{
   position: absolute;
   right: 3rem;
   top: 0.4rem;
-  border-color: #047ca4;
+  border-color: white;
+}
+
+button:hover .bi {
+    fill: #048db6;
+    transition: 0.35s;
 }
 
 .bi {
+    transition: 0.35s;
     margin-bottom: 3px;
 }
 
 .card-header {
     cursor: pointer;
+    background-color: #048db6;
+    color: white;
 }
 
 .card-header h6::selection,

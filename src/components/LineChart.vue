@@ -89,6 +89,15 @@ export default {
     margin-bottom: 20px;
 }
 
+.card-header {
+    background-color: #048db6;
+    color: white;
+}
+
+h6 {
+    margin-bottom: 4px;
+}
+
 @media (min-width: 768px) {
     .card-body {
         height: 15rem;

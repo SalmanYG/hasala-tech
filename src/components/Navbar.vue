@@ -1,12 +1,12 @@
 <template>
-  <nav class="navbar fixed-top navbar-light bg-light">
+  <nav class="navbar fixed-top">
     <div class="container">
       <div class="logo"><h2>HasalaTech</h2></div>
       <form class="content">
         <label
           >Hello, <strong>{{ displayName }}</strong></label
         >
-        <button @click.prevent="handleSignOut" class="btn btn-outline-danger">
+        <button @click.prevent="handleSignOut" class="btn btn-danger">
           Sign Out
         </button>
       </form>
@@ -55,7 +55,9 @@ export default {
 <style scoped>
 .navbar {
   padding: 10px;
-  padding-left: calc(100vw - 100%)
+  padding-left: calc(100vw - 100%);
+  background-color: #048db6;
+  color: white;
 }
 .btn {
   margin: 0 10px;
