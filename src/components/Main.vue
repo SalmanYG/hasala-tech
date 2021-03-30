@@ -1,6 +1,11 @@
 <template>
   <div v-if="doc">
     <div class="container">
+      <!-- <div class="wallet-selector row">
+        <div class="col-sm-12">
+          <WalletSelector/>
+        </div>
+      </div> -->
       <div class="cards row">
         <div class="col-md-4 col-sm-12">
           <Card
@@ -44,6 +49,7 @@
             @edit="editWallet"
             @addWalletModal="addWalletModal"
             :wallets="queryRes"
+            :shownWallet="shownWallet"
           />
         </div>
       </div>
@@ -63,6 +69,7 @@ import PieChart from "./PieChart.vue";
 import LineChart from "./LineChart.vue";
 import WalletList from "./WalletList.vue";
 import Modal from "./Modal.vue";
+import WalletSelector from "./WalletSelector.vue";
 
 import getUser from "../composables/getUserAuth";
 import getFromCollection from "../composables/getFromCollection";
@@ -75,7 +82,8 @@ export default {
     PieChart,
     LineChart,
     WalletList,
-    Modal
+    Modal,
+    WalletSelector
   },
 
   setup(props, context) {
@@ -154,9 +162,9 @@ export default {
     });
 
     //event that handles when a wallet gets clicked
-    const showWallet = (wallet) => {
+    const showWallet = async (wallet) => {
       shownWallet.value = wallet;
-      getSpendings(wallet)
+      await getSpendings(wallet)
     };
 
     const balanceModal = () => {
@@ -184,7 +192,7 @@ export default {
           console.log('The wallet ', await wallet.name, 'have spendings')
 
           spendings.value.length = 0
-          let spendArr = await wallet.spendings.reverse()
+          let spendArr = wallet.spendings
           let monthAgo = new Date()
               monthAgo.setDate(monthAgo.getDate() - 31)
           let count = 0
@@ -203,7 +211,7 @@ export default {
             }
           }
 
-          // console.log("This wallet's spendings are: ", spendings.value)
+          console.log("This wallet's spendings are: ", spendings.value)
 
           ////////////////////////////////////////////////////////
           ///////////spendings reversed successfully//////////////
@@ -212,7 +220,7 @@ export default {
 
 
           if(count > 0) {
-            spendingsTotal.value = total.toFixed(2)
+            spendingsTotal.value = total
             spendingsAvg.value = (total/count).toFixed(2)
 
             // console.log("Total spendings is ", spendingsTotal.value)
@@ -272,7 +280,7 @@ export default {
           let prevDate = ""
           let spendPerDay = []
           let spendDays = []
-          for (let i =  0; i < spendings.value.length; i++) {
+          for (let i = spendings.value.length - 1; i >= 0; i--) {
             const spend = spendings.value[i]
             let currDate = spend.createdAt.toDate().getDate() + "/" + (spend.createdAt.toDate().getMonth() + 1)
             if (currDate === prevDate) {
@@ -298,7 +306,7 @@ export default {
         } else {
           console.log('The wallet ', await wallet.name, 'doesn\'t have spendings')
           spendings.value.length = 0
-          spendingsTotal.value = (0).toFixed(2)
+          spendingsTotal.value = 0
           spendingsAvg.value = (0).toFixed(2)
           daySpendingLabels.value.length = 0
           daySpendingLabels.value.length = 0

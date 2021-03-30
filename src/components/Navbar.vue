@@ -55,6 +55,7 @@ console.log( displayName.value);
 <style scoped>
 .navbar {
   padding: 10px;
+  padding-left: calc(100vw - 100%)
 }
 .btn {
   margin: 0 10px;

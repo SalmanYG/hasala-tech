@@ -1,7 +1,7 @@
 <template>
   <div class="chart card">
       <div class="card-header">
-          Spendings Per Day (Last 31 Days)
+          <h6>Spendings Per Day (Last 31 Days)</h6>
       </div>
       <div class="card-body">
           <canvas ref='chart'></canvas>

@@ -208,6 +208,11 @@ export default {
         };
         let wid = await addDoc(wal);
 
+        //update the spendings with the same amount to go around the bug
+        //that firestore has with its increment method
+        const { updateBalance } = updateWallet(wid)
+        await updateBalance(amount.value)
+
         //add wallet id to users
         console.log("users used to update wallets array", users.value);
         for await (let user of users.value) {

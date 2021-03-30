@@ -41,5 +41,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   padding: 0;
+  padding-left: calc(100vw - 100%)
 }
 </style>
