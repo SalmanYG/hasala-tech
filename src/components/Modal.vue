@@ -290,10 +290,14 @@ button {
 .close {
   margin-top: 0%;
   position: absolute;
-  right: 10px;
+  left: 137px;
   top: 10px;
   border: none;
   background: none;
+}
+
+.add .close {
+  left: 185px;
 }
 
 .backdrop {
@@ -327,6 +331,10 @@ button {
 @media (max-width: 768px) {
     .add {
       width: 20rem;
+    }
+
+    .add .close {
+      left: 137px;
     }
 }
 

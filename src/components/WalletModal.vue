@@ -179,7 +179,7 @@ button {
 .close {
   margin-top: 0%;
   position: absolute;
-  right: 10px;
+  left: 185px;
   top: 10px;
   border: none;
   background: none;
@@ -215,6 +215,10 @@ button {
 @media (max-width: 768px) {
     .add {
       width: 18rem;
+    }
+
+    .close {
+      left: 125px;
     }
 }
 </style>
