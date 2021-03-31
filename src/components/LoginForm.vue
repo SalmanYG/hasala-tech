@@ -43,7 +43,7 @@
                       >Incorrect email or password. Please Try again.</div>
                     </div>
                     <div v-else-if="signupSuccess" class="alert alert-success">
-                      You have successfully created your account. Please log in to access you account.
+                      You have successfully created your account. Please log in to access your account.
                     </div>
                   </form>
                 </div>
