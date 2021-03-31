@@ -55,7 +55,6 @@ import { auth, firestore } from "../firebase/config";
 import updateWallet from "../composables/updateWallet";
 import { onMounted, ref } from 'vue';
 import docRef from '../composables/docRef';
-import getFromCollection from '../composables/getFromCollection';
 
 export default {
   props: ["wallet"],
@@ -66,11 +65,12 @@ export default {
     const newEmails = ref([])
     const email = ref("")
     const users = ref([])
-    const removedEmails = ref([])
     const isDefault = ref(false)
     const isLoaded = ref(false)
 
-    const { getRef, result } = docRef("users");
+    //for future update (?)
+    // const removedEmails = ref([])
+    
     const { getCollRef, collResult } = docRef("users");
 
     const user = ref(auth.currentUser);
@@ -144,8 +144,6 @@ export default {
         balance: amount.value,
         users: users.value
       }
-      
-      console.log("The wallet data is: ", walletData)
 
       await editWallet(walletData)
       closeModal()

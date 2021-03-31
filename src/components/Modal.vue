@@ -214,7 +214,6 @@ export default {
         await updateBalance(amount.value)
 
         //add wallet id to users
-        console.log("users used to update wallets array", users.value);
         for await (let user of users.value) {
           await getRef(user);
           result.value.update({

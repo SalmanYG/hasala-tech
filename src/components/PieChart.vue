@@ -10,14 +10,13 @@
 </template>
 
 <script>
-import { onBeforeMount, onBeforeUpdate, onMounted, onUpdated, ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 export default {
     props: ['data'],
     setup(props) {
         const chart = ref(null)
         const emptyData = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         let chartjs = undefined
-        //I need to modify this to make it 'update' the chart, not create a new one above it.
 
         onMounted(() => {
             chartjs = new Chart(chart.value, {

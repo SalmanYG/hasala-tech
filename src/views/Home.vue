@@ -12,6 +12,13 @@
     <SignupForm @sucessfulSignup="redirectToLogin" />
         <a class="nav-link" @click="resetValues" >Login</a>
   </div>
+
+  
+  <div class="footer">
+    <a href="https://github.com/SalmanYG">
+      <img class="github" src="../assets/github.svg" alt="Github Account">
+    </a>
+  </div>
 </template>
 
 <script>
@@ -72,6 +79,23 @@ h1 {
   text-align: center;
   margin-top: 25px;
   /* color: white; */
+}
+
+.footer {
+  background-color: #004c6d;
+  color: white;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 4rem;
+  padding: 1rem 0 2rem;
+  margin: 0;
+}
+
+.github {
+  width: 30px;
+  height: 30px;
 }
 
 @media (max-width: 768px) {

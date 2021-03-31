@@ -69,9 +69,6 @@ import PieChart from "./PieChart.vue";
 import LineChart from "./LineChart.vue";
 import WalletList from "./WalletList.vue";
 import Modal from "./Modal.vue";
-import WalletSelector from "./WalletSelector.vue";
-
-import getUser from "../composables/getUserAuth";
 import getFromCollection from "../composables/getFromCollection";
 import docRef from "../composables/docRef";
 import { auth } from "../firebase/config";
@@ -82,8 +79,7 @@ export default {
     PieChart,
     LineChart,
     WalletList,
-    Modal,
-    WalletSelector
+    Modal
   },
 
   setup(props, context) {
@@ -101,7 +97,6 @@ export default {
 
     //for getting returned values from composables
     const { doc, getDoc } = getFromCollection("users"); //to get documents
-    const { getRef, result } = docRef("users"); //to update single document
     const { getCollRef, collResult } = docRef("wallets"); //to query from a collection
 
     //to execute anything else (+ methods that require await)
@@ -151,8 +146,7 @@ export default {
                 getSpendings(shownWallet.value)
 
               } catch (e) {
-                //set them all to zero
-                console.log("error ", e.message);
+                //just in case
               }
 
               
@@ -184,12 +178,9 @@ export default {
     };
 
     const getSpendings = async (wallet) => {
-      console.log("I got executed in", await wallet.name)
-      console.log("this is the wallet current spendings", await wallet.spendings)
 
       try {
         if(await wallet.spendings) {
-          console.log('The wallet ', await wallet.name, 'have spendings')
 
           spendings.value.length = 0
           let spendArr = wallet.spendings
@@ -211,8 +202,6 @@ export default {
             }
           }
 
-          console.log("This wallet's spendings are: ", spendings.value)
-
           ////////////////////////////////////////////////////////
           ///////////spendings reversed successfully//////////////
           ////////////////////////////////////////////////////////
@@ -222,9 +211,6 @@ export default {
           if(count > 0) {
             spendingsTotal.value = total
             spendingsAvg.value = (total/count).toFixed(2)
-
-            // console.log("Total spendings is ", spendingsTotal.value)
-            // console.log("Average spendings is ", spendingsAvg.value)
           } else {
             spendingsTotal.value = 0
             spendingsAvg.value = 0
@@ -271,8 +257,6 @@ export default {
           }
           categoryData.value = data
 
-          // console.log("pie chart data is", categoryData.value)
-
           ////////////////////////////////////////////////////////
           ////////Pie Chart Data calculated successfully//////////
           ////////////////////////////////////////////////////////
@@ -293,9 +277,6 @@ export default {
             }
           }
 
-          console.log("The days where spendings were made are", spendDays)
-          console.log("The amount of spendings made per day are", spendPerDay)
-
           daySpendingLabels.value = spendDays
           daySpendingData.value = spendPerDay
           
@@ -304,7 +285,6 @@ export default {
           ////////////////////////////////////////////////////////
 
         } else {
-          console.log('The wallet ', await wallet.name, 'doesn\'t have spendings')
           spendings.value.length = 0
           spendingsTotal.value = 0
           spendingsAvg.value = (0).toFixed(2)

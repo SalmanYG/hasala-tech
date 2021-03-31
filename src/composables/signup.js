@@ -1,5 +1,5 @@
 import { ref } from "vue"
-import { auth, firestore, arrUnion, timeStamp } from "../firebase/config"
+import { auth, arrUnion, timeStamp } from "../firebase/config"
 import addToCollection from "./addToCollection"
 import docRef from "./docRef"
 

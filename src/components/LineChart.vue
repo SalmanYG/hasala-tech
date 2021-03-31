@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { onMounted, onUpdated, ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 export default {
     props: ['labels', 'data'],
     setup(props) {

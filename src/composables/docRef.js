@@ -12,7 +12,7 @@ const docRef = (collection) => {
   const getRef = async (id) => {
 
     try {
-      result.value = await firestore.collection(collection).doc(id)
+      result.value = firestore.collection(collection).doc(id)
     }
     catch(err) {
       console.log(err.message)

@@ -49,7 +49,7 @@ export default {
     Modal,
     WalletModal,
   },
-  setup(props) {
+  setup() {
     const showModal = ref(false);
     const showBalanceModal = ref(false);
     const showSpendingsModal = ref(false);

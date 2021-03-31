@@ -14,7 +14,7 @@ const getFromCollection = (collection) => {
     
 
     try {
-      await firestore.collection(collection).doc(id).onSnapshot((snap) => {
+      firestore.collection(collection).doc(id).onSnapshot((snap) => {
         doc.value = { ...snap.data(), id: snap.id }
       })
       
@@ -30,7 +30,7 @@ const getFromCollection = (collection) => {
     
 
     try {
-      await firestore.collection(collection)
+      firestore.collection(collection)
             .orderBy('createdAt', 'desc')
             .onSnapshot((snap) => {
               let documents = snap.docs.map((doc) => {

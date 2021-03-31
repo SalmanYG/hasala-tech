@@ -79,7 +79,6 @@ import useSignup from "../composables/signup";
 export default {
   setup(props, context) {
     const { error, signup } = useSignup();
-    console.log(error);
 
     onMounted(() => {
       error.value = false

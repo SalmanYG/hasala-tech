@@ -34,7 +34,7 @@ body {
 
 @media (max-width: 979px) {
   body {
-    padding: 0px;
+    padding: 0;
   }
 }
 #app {

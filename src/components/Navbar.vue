@@ -15,9 +15,8 @@
 </template>
 
 <script>
-import { ref, onMounted, onBeforeMount, onBeforeUpdate } from "vue";
+import { ref, onMounted } from "vue";
 import useSignOut from "../composables/signout";
-import getUser from "../composables/getUserAuth";
 import { auth } from "../firebase/config";
 
 export default {

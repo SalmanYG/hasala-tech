@@ -1,12 +1,5 @@
-import docRef from "./docRef";
-import { ref, onMounted } from "vue";
-import {
-  firestore,
-  increment,
-  arrUnion,
-  auth,
-  timeStamp,
-} from "../firebase/config";
+import { ref } from "vue";
+import { firestore, increment, arrUnion, auth} from "../firebase/config";
 import firebase from "firebase/app";
 import "firebase/firestore";
 
@@ -21,9 +14,6 @@ auth.onAuthStateChanged((newUser) => {
 
 const updateWallet = (wid) => {
   const updateBalance = async (val) => {
-    // const {getRef, result} = docRef("wallets")
-    // await getRef(wid)
-
     const walletRef = firestore.collection("wallets").doc(wid);
 
     walletRef.update({
