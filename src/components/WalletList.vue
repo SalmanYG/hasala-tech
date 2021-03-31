@@ -3,11 +3,18 @@
       <div class="card">
         <div @click="toggleList" class="card-header">
             <div class="heading" v-if="!showWallets">
-                <h6>Wallets (Showing {{shownWallet.name}})</h6>
+                <div class="heading-text">
+                    <h6>Wallets (Showing {{shownWallet.name}})</h6>
+                    <small>Click to show wallets...</small>
+                </div>
+                
                 <span class="material-icons">expand_more</span>
             </div>
             <div class="heading" v-else>
-                <h6>Wallets (Showing {{shownWallet.name}})</h6>
+                <div class="heading-text">
+                    <h6>Wallets (Showing {{shownWallet.name}})</h6>
+                    <small>Click to hide wallets...</small>
+                </div>
                 <span class="material-icons">expand_less</span>
             </div>
             <div>
@@ -36,7 +43,7 @@ export default {
         Wallet
     },
     setup(props,context) {
-        const showWallets = ref(false)
+        const showWallets = ref(true)
 
         const toggleList = () => {
             showWallets.value = !showWallets.value
@@ -74,7 +81,7 @@ export default {
 button{
   position: absolute;
   right: 3rem;
-  top: 0.4rem;
+  top: 0.8rem;
   border-color: white;
 }
 
@@ -92,10 +99,12 @@ button:hover .bi {
     cursor: pointer;
     background-color: #048db6;
     color: white;
+    padding-top: 5px;
 }
 
 .card-header h6::selection,
-.card-header span::selection{
+.card-header span::selection,
+.card-header small::selection{
     color: none;
     background: none;
 }
@@ -106,13 +115,16 @@ button:hover .bi {
     align-items: baseline;
 }
 
-h6 {
+.heading-text {
     max-width: 80%;
 }
 
+h6 {
+    margin-bottom: 1px;
+}
 span {
     position: relative;
-    top: 5px;
+    top: 17px;
 }
 
 </style>

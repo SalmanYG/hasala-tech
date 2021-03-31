@@ -1,5 +1,5 @@
 <template>
-
+  <h1>HasalaTech</h1>
   <div v-if="registered">
    
     <LoginForm @login="redirectToDashboard" :signupSuccess="signedUp"/>
@@ -12,7 +12,6 @@
     <SignupForm @sucessfulSignup="redirectToLogin" />
         <a class="nav-link" @click="resetValues" >Login</a>
   </div>
-
 </template>
 
 <script>
@@ -61,13 +60,23 @@ export default {
 </script>
 
 <style scoped>
+
 a {
   font-weight: bold;
   text-decoration: underline;
   cursor: pointer;
-    text-align: center;
-
+  text-align: center;
 }
 
+h1 {
+  text-align: center;
+  margin-top: 25px;
+  /* color: white; */
+}
 
+@media (max-width: 768px) {
+  h1 {
+    margin-top: 20%;
+  }
+}
 </style>

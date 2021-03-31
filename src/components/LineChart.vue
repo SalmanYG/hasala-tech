@@ -71,9 +71,6 @@ export default {
                             }
                         }]
                     },
-                    animation: {
-                        duration: 0
-                    },
                     maintainAspectRatio: false
                 }
             })
@@ -86,7 +83,7 @@ export default {
 
 <style scoped>
 .chart {
-    margin-bottom: 20px;
+    margin-bottom: 19px;
 }
 
 .card-header {

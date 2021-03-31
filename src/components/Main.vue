@@ -353,4 +353,10 @@ body {
       margin-bottom: 20px;
     }
 }
+
+@media (max-width: 349px) {
+  .cards {
+      margin-top: 100px;
+    }
+}
 </style>

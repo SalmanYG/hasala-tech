@@ -75,9 +75,6 @@ export default {
                     legend: {
                         display: false
                     },
-                    animation: {
-                        duration: 0
-                    },
                     maintainAspectRatio: false
                 }
             })
@@ -88,8 +85,9 @@ export default {
 </script>
 
 <style scoped>
+
 .chart {
-    margin-bottom: 20px;
+    margin-bottom: 19px;
 }
 
 .card-header {

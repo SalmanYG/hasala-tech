@@ -26,9 +26,10 @@ const user = ref(auth.currentUser);
 </script>
 
 <style>
+
 body {
   margin: 0;
-  padding: 60px 0 20px;
+  padding: 60px 0 17px;
 }
 
 @media (max-width: 979px) {
