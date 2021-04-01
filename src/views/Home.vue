@@ -85,7 +85,7 @@ h1 {
   background-color: #004c6d;
   color: white;
   text-align: center;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
   height: 4rem;

@@ -4,19 +4,14 @@
 
 <script>
 import { auth } from "./firebase/config";
-import { onMounted,ref } from 'vue';
+import { ref } from 'vue';
 export default {
   setup() {
-const user = ref(auth.currentUser);
+    const user = ref(auth.currentUser);
 
- auth.onAuthStateChanged(  (newUser) => {
-   user.value = newUser;
-});
-
-
-
-
-
+    auth.onAuthStateChanged((newUser) => {
+      user.value = newUser;
+    })
 
     $("#sidebar").mCustomScrollbar({
       theme: "minimal"
@@ -26,7 +21,9 @@ const user = ref(auth.currentUser);
 </script>
 
 <style>
-
+html {
+  min-height: 100%;
+}
 body {
   margin: 0;
   padding: 60px 0 17px;

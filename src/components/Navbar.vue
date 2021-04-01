@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar fixed-top">
     <div class="container">
-      <div class="logo"><h2>HasalaTech</h2></div>
+      <div class="logo"><h2 translate="no">HasalaTech</h2></div>
       <form class="content">
         <label
           >Hello, <strong>{{ displayName }}</strong></label
@@ -26,14 +26,16 @@ export default {
     
     // to get user before loading page
      const user = ref(auth.currentUser);
-    onMounted(async () => {
-     await auth.onAuthStateChanged((newUser) => {
-        if (newUser) {
-          user.value = newUser;
-          displayName.value = user.value.displayName;
-          document.title = displayName.value + "'s Dashboard"
-        }
-      });
+      onMounted(async () => {
+      await auth.onAuthStateChanged((newUser) => {
+          if (newUser) {
+            user.value = newUser;
+            displayName.value = user.value.displayName;
+            if(displayName.value !== null) {
+              document.title = displayName.value + "'s Dashboard"
+            }
+          }
+        });
     });
 
     const { error, signOut } = useSignOut();
@@ -54,9 +56,12 @@ export default {
 <style scoped>
 .navbar {
   padding: 10px;
-  padding-left: calc(100vw - 100%);
   background-color: #048db6;
   color: white;
+}
+
+.container {
+  padding-right: 0;
 }
 .btn {
   margin: 0 10px;
